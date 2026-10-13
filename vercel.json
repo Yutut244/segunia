@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "name": "seguia",
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/public/$1"
+    }
+  ]
+}

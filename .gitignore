@@ -1,0 +1,15 @@
+# Dependencias
+node_modules/
+
+# Entorno local (no subir claves reales a repositorios públicos)
+.env.local
+.env.*.local
+
+# Logs y temporales
+*.log
+.DS_Store
+Thumbs.db
+.env
+.env.*
+!.env.example
+seguia.db

@@ -1,0 +1,28 @@
+{
+  "name": "seguia",
+  "version": "1.0.0",
+  "description": "Sistema Inteligente de Seguimiento Académico y Retroalimentación Docente Basado en Evidencias",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "init:db": "node init-supabase.js",
+    "test": "node test-suite.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "seguia",
+    "educacion",
+    "inteligencia-artificial",
+    "docentes",
+    "supabase",
+    "vercel"
+  ],
+  "authors": [
+    "Cristóbal Martínez",
+    "Jainer Salas"
+  ],
+  "license": "MIT"
+}
