@@ -7,6 +7,10 @@
       "destination": "/api/index.js"
     },
     {
+      "source": "/app",
+      "destination": "/public/app.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/public/$1"
     }

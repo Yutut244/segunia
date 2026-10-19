@@ -37,7 +37,11 @@ const MIME_TYPES = {
 };
 
 function serveStatic(req, res, pathname) {
-  let filePath = path.join(PUBLIC_DIR, pathname === '/' ? 'index.html' : pathname);
+  let cleanPath = pathname === '/' ? 'index.html' : pathname;
+  if (cleanPath === '/app' || cleanPath === 'app') {
+    cleanPath = 'app.html';
+  }
+  let filePath = path.join(PUBLIC_DIR, cleanPath);
 
   if (!filePath.startsWith(PUBLIC_DIR)) {
     res.writeHead(403);

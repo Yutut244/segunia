@@ -3,946 +3,1229 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SeguIA | Sistema Inteligente de Seguimiento Académico y Retroalimentación</title>
-  <link rel="stylesheet" href="css/styles.css">
+  <meta name="description" content="SeguIA (SegunIA) - Sistema Inteligente de Seguimiento Académico y Retroalimentación Docente Basado en Evidencias. Desarrollado por Cristóbal Martínez y Jainer Salas.">
+  <title>SeguIA | Sistema de Seguimiento Académico y Retroalimentación Basado en Evidencias</title>
+  
+  <!-- Google Fonts: Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="css/landing.css">
 </head>
 <body>
 
-  <!-- ======================================================== -->
-  <!-- 1. VISTA DE INICIO DE SESIÓN (LOGIN BÁSICO DOCENTE) -->
-  <!-- ======================================================== -->
-  <section id="loginView">
-    <div class="login-card">
-      <div class="login-brand">
-        <div class="login-logo">S</div>
-        <h1>SeguIA</h1>
-        <p>"La IA propone, los datos sustentan y el docente decide."</p>
-      </div>
+  <!-- ==========================================================================
+       Encabezado y Barra de Navegación
+       ========================================================================== -->
+  <header class="site-header" id="siteHeader">
+    <div class="container nav-container">
+      <a href="#" class="brand-link">
+        <div class="brand-icon-box">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+            <path d="M2 17l10 5 10-5"/>
+            <path d="M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <div class="brand-name">
+          <span class="brand-title">SeguIA</span>
+          <span class="brand-tag">SegunIA Pedagógica</span>
+        </div>
+      </a>
 
-      <div class="login-error" id="loginErrorAlert">
-        <span id="loginErrorText">Credenciales inválidas.</span>
-      </div>
+      <nav class="nav-menu" id="navMenu">
+        <a href="#flujo" class="nav-item-link">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 21h5v-5"/></svg>
+          Flujo
+        </a>
+        <a href="#pilares" class="nav-item-link">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+          Pilares
+        </a>
+        <a href="#calculadora" class="nav-item-link">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+          Simulador
+        </a>
+        <a href="#laboratorio-ab" class="nav-item-link">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>
+          Laboratorio A/B
+        </a>
+        <a href="#caso-estudio" class="nav-item-link">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m14.7 6.3 3 3a1 1 0 0 1 0 1.4l-7.3 7.3a2 2 0 0 1-1.4.6H5a1 1 0 0 1-1-1v-4a2 2 0 0 1 .6-1.4l7.3-7.3a1 1 0 0 1 1.4 0"/><path d="M16 2a2.83 2.83 0 0 1 4 4L17 9l-4-4Z"/></svg>
+          Caso Juan Camilo
+        </a>
+        <a href="#decalogo" class="nav-item-link">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+          Ética
+        </a>
+      </nav>
 
-      <form id="loginForm" class="login-form">
-        <div class="form-group">
-          <label for="loginUsername">Usuario o Correo Institucional:</label>
-          <input type="text" id="loginUsername" class="form-control" placeholder="docente@seguia.edu" required autocomplete="username">
+      <div class="nav-actions">
+        <a href="app.html" class="btn btn-primary btn-sm">
+          <span>Abrir SeguIA</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Abrir Menú de Navegación">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       Sección Hero
+       ========================================================================== -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-content">
+          <div class="hero-tag-wrapper">
+            <span class="badge badge-primary">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+              Seguimiento Académico Basado en Evidencias
+            </span>
+          </div>
+
+          <h1 class="hero-headline">
+            Inteligencia Artificial que <span class="highlight">sustenta con datos</span> y respeta la decisión del docente.
+          </h1>
+
+          <p class="hero-subhead">
+            <strong>SeguIA (SegunIA)</strong> es un sistema institucional de evaluación formativa y acompañamiento pedagógico. Integra un motor estadístico determinístico libre de alucinaciones con modelos de lenguaje prudentes y auditables.
+          </p>
+
+          <div class="hero-quote-box">
+            <p class="hero-quote">"La IA propone, los datos sustentan y el docente decide."</p>
+            <div class="hero-quote-author">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              Autores: Cristóbal Martínez & Jainer Salas
+            </div>
+          </div>
+
+          <div class="hero-actions">
+            <a href="app.html" class="btn btn-primary btn-lg">
+              <span>Ir a la Aplicación en Vivo</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" x2="19" y1="12" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+            <a href="#flujo" class="btn btn-secondary btn-lg">
+              <span>Conoce Cómo Funciona</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+            </a>
+          </div>
+
+          <div class="hero-meta-strip">
+            <div class="hero-meta-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <span>Privacidad y Anonimización</span>
+            </div>
+            <div class="hero-meta-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20"/><path d="m17 5-5-3-5 3"/><path d="m17 19-5 3-5-3"/></svg>
+              <span>Cero Alucinación Aritmética</span>
+            </div>
+            <div class="hero-meta-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              <span>Explicabilidad Obligatoria</span>
+            </div>
+          </div>
         </div>
 
-        <div class="form-group">
-          <label for="loginPassword">Contraseña:</label>
-          <input type="password" id="loginPassword" class="form-control" placeholder="••••••••" required autocomplete="current-password">
+        <!-- Hero Mockup Visual -->
+        <div class="hero-mockup-wrapper">
+          <div class="hero-mockup-card">
+            <div class="mockup-header-bar">
+              <div class="mockup-dots">
+                <span class="mockup-dot red"></span>
+                <span class="mockup-dot yellow"></span>
+                <span class="mockup-dot green"></span>
+              </div>
+              <div class="mockup-address">segunia-umber.vercel.app</div>
+              <div style="width: 30px;"></div>
+            </div>
+
+            <div class="mockup-body">
+              <div class="mockup-stats-grid">
+                <div class="mockup-stat-box">
+                  <div class="mockup-stat-label">
+                    <span class="status-dot dot-green"></span>
+                    Promedio Grupo
+                  </div>
+                  <div class="mockup-stat-val">74.2</div>
+                  <div class="mockup-stat-note">Escala 0 - 100</div>
+                </div>
+
+                <div class="mockup-stat-box">
+                  <div class="mockup-stat-label">
+                    <span class="status-dot dot-red"></span>
+                    Atención Prioritaria
+                  </div>
+                  <div class="mockup-stat-val" style="color: #dc2626;">1 caso</div>
+                  <div class="mockup-stat-note">Juan Camilo (EST-001)</div>
+                </div>
+
+                <div class="mockup-stat-box">
+                  <div class="mockup-stat-label">
+                    <span class="status-dot dot-amber"></span>
+                    Revisión Recom.
+                  </div>
+                  <div class="mockup-stat-val" style="color: #d97706;">2 casos</div>
+                  <div class="mockup-stat-note">Disminución &gt;2 act.</div>
+                </div>
+              </div>
+
+              <!-- Vector Line Chart Preview -->
+              <div class="mockup-chart-preview">
+                <div class="mockup-chart-header">
+                  <div class="mockup-chart-title">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/></svg>
+                    Trayectoria Temporal (Juan Camilo)
+                  </div>
+                  <span class="badge badge-danger">Pendiente m = -3.20</span>
+                </div>
+                <svg class="mockup-chart-svg" viewBox="0 0 400 110" preserveAspectRatio="none">
+                  <!-- Grid Lines -->
+                  <line x1="40" y1="20" x2="380" y2="20" stroke="#f1f5f9" stroke-width="1"/>
+                  <line x1="40" y1="55" x2="380" y2="55" stroke="#f1f5f9" stroke-width="1"/>
+                  <line x1="40" y1="90" x2="380" y2="90" stroke="#f1f5f9" stroke-width="1"/>
+                  
+                  <!-- Trend Line (Linear Regression) -->
+                  <line x1="60" y1="25" x2="360" y2="88" stroke="#fca5a5" stroke-width="2" stroke-dasharray="4,4"/>
+                  
+                  <!-- Data Polyline -->
+                  <polyline points="60,25 135,40 210,55 285,75 360,88" fill="none" stroke="#2563eb" stroke-width="3" stroke-linecap="round"/>
+                  
+                  <!-- Points with Tooltip style -->
+                  <circle cx="60" cy="25" r="4.5" fill="#2563eb" stroke="#ffffff" stroke-width="2"/>
+                  <circle cx="135" cy="40" r="4.5" fill="#2563eb" stroke="#ffffff" stroke-width="2"/>
+                  <circle cx="210" cy="55" r="4.5" fill="#2563eb" stroke="#ffffff" stroke-width="2"/>
+                  <circle cx="285" cy="75" r="4.5" fill="#2563eb" stroke="#ffffff" stroke-width="2"/>
+                  <circle cx="360" cy="88" r="5" fill="#dc2626" stroke="#ffffff" stroke-width="2"/>
+                  
+                  <!-- Score Labels -->
+                  <text x="60" y="16" font-size="10" font-weight="700" text-anchor="middle" fill="#334155">85</text>
+                  <text x="135" y="32" font-size="10" font-weight="700" text-anchor="middle" fill="#334155">76</text>
+                  <text x="210" y="47" font-size="10" font-weight="700" text-anchor="middle" fill="#334155">68</text>
+                  <text x="285" y="67" font-size="10" font-weight="700" text-anchor="middle" fill="#334155">59</text>
+                  <text x="360" y="80" font-size="10" font-weight="800" text-anchor="middle" fill="#dc2626">55</text>
+                </svg>
+              </div>
+
+              <!-- AI Output Recommendation -->
+              <div class="mockup-ai-pill">
+                <div class="mockup-ai-icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>
+                </div>
+                <div class="mockup-ai-text">
+                  <strong>Síntesis Formativa de SeguIA:</strong> "El estudiante comprende los conceptos formales (82 en álgebra), pero presenta bloqueo procedimental en enunciados extensos. Se sugiere realizar un taller guiado en descomposición heurística de problemas."
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-
-        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.75rem; margin-top: 0.5rem;" id="btnLoginSubmit">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" x2="3" y1="12" y2="12"/></svg>
-          Iniciar Sesión
-        </button>
-      </form>
-
-      <div class="demo-account-box">
-        <p>¿Deseas probar el sistema rápidamente?</p>
-        <button type="button" class="btn btn-sm btn-outline" id="btnQuickDemo" style="width: 100%;">
-          Acceso Rápido con Cuenta Docente Demo
-        </button>
       </div>
     </div>
   </section>
 
-  <!-- ======================================================== -->
-  <!-- 2. VISTA PRINCIPAL DE LA APLICACIÓN (AUTENTICADA) -->
-  <!-- ======================================================== -->
-  <div id="appView">
-    <div class="app-layout">
-      
-      <!-- Telón de fondo móvil -->
-      <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+  <!-- ==========================================================================
+  <!-- ==========================================================================
+       Flujo Pedagógico Continuo (7 Fases Interactivas)
+       ========================================================================== -->
+  <section class="flow-section" id="flujo">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 21h5v-5"/></svg>
+          Arquitectura Operativa
+        </span>
+        <h2 class="section-title">El Ciclo Pedagógico Continuo de SeguIA</h2>
+        <p class="section-description">
+          A diferencia de los sistemas tradicionales que reemplazan al educador o emiten juicios sumativos fríos, SeguIA articula un proceso circular en 7 pasos donde la tecnología asiste y el docente lidera.
+        </p>
+      </div>
 
-      <!-- Barra Lateral Moderna (Sin desplazamiento horizontal) -->
-      <aside class="app-sidebar" id="appSidebar">
-        <!-- Encabezado Sidebar -->
-        <div class="sidebar-brand">
-          <div class="brand-wrapper">
-            <div class="sidebar-logo">S</div>
-            <div class="sidebar-brand-title">
-              <h2>SeguIA</h2>
-              <span>Acompañamiento Docente</span>
+      <!-- Barra de Navegación y Controles del Slider Moderno -->
+      <div class="flow-controls-bar">
+        <div class="flow-pills-nav" id="flowPillsNav">
+          <button class="flow-pill active" data-step="0">
+            <span class="pill-num">01</span>
+            <span class="pill-text">Evidencia</span>
+          </button>
+          <button class="flow-pill" data-step="1">
+            <span class="pill-num">02</span>
+            <span class="pill-text">Datos</span>
+          </button>
+          <button class="flow-pill" data-step="2">
+            <span class="pill-num">03</span>
+            <span class="pill-text">Indicadores</span>
+          </button>
+          <button class="flow-pill" data-step="3">
+            <span class="pill-num">04</span>
+            <span class="pill-text">IA Propone</span>
+          </button>
+          <button class="flow-pill" data-step="4">
+            <span class="pill-num">05</span>
+            <span class="pill-text">Docente Decide</span>
+          </button>
+          <button class="flow-pill" data-step="5">
+            <span class="pill-num">06</span>
+            <span class="pill-text">Intervención</span>
+          </button>
+          <button class="flow-pill" data-step="6">
+            <span class="pill-num">07</span>
+            <span class="pill-text">Medición</span>
+          </button>
+        </div>
+
+        <div class="flow-nav-actions">
+          <span class="flow-counter-badge" id="flowStepCounter">Fase 01 de 07</span>
+          <button class="flow-nav-btn" id="flowPrevBtn" aria-label="Fase anterior">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <button class="flow-nav-btn" id="flowNextBtn" aria-label="Siguiente fase">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Contenedor del Slider Moderno (Sin barra nativa fea, con deslizamiento suave) -->
+      <div class="flow-slider-wrapper">
+        <div class="flow-timeline" id="flowTimeline">
+          <!-- Paso 1 -->
+          <div class="flow-step-card active" data-step="0">
+            <div class="flow-card-top">
+              <span class="flow-step-num">FASE 01</span>
+              <span class="flow-role-badge">Docente en Aula</span>
             </div>
-          </div>
-          <button class="btn-sidebar-close" id="btnSidebarClose" aria-label="Cerrar Menú">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" x2="6" y1="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg>
-          </button>
-        </div>
-
-        <!-- Selector de Curso en Sidebar -->
-        <div class="sidebar-course-box">
-          <div class="sidebar-course-label">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
-            Curso Académico
-          </div>
-          <select id="courseSelect" aria-label="Seleccionar Curso">
-            <!-- Cargado dinámicamente -->
-          </select>
-        </div>
-
-        <!-- Menú de Navegación Vertical -->
-        <nav class="sidebar-nav">
-          <button class="nav-item active" data-tab="tab-dashboard">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
-            <span>Panel del Curso</span>
-          </button>
-
-          <button class="nav-item" data-tab="tab-student">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            <span>Ficha Individual & IA</span>
-          </button>
-
-          <button class="nav-item" data-tab="tab-cycle">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 21h5v-5"/></svg>
-            <span>Ciclo de Intervención</span>
-          </button>
-
-          <button class="nav-item" data-tab="tab-ab">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>
-            <span>Laboratorio A/B & Rúbricas</span>
-          </button>
-
-          <button class="nav-item" data-tab="tab-settings">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
-            <span>Configuración</span>
-          </button>
-
-          <button class="nav-item" data-tab="tab-ethics">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
-            <span>Principios Éticos</span>
-          </button>
-        </nav>
-
-        <!-- Pie de Sidebar con Perfil y Logout -->
-        <div class="sidebar-footer">
-          <div class="user-profile-badge">
-            <div class="user-avatar" id="userAvatar">CM</div>
-            <div class="user-info">
-              <span class="user-name" id="userName">Prof. Docente</span>
-              <span class="user-role" id="userRole">Docente Titular</span>
+            <div class="flow-step-icon icon-blue">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
             </div>
-          </div>
-          <button class="btn-logout" id="btnLogout" title="Cerrar Sesión" aria-label="Cerrar Sesión">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
-          </button>
-        </div>
-      </aside>
-
-      <!-- Área de Contenido Principal -->
-      <div class="app-main-content">
-        <!-- Barra Superior (Topbar) -->
-        <header class="app-topbar">
-          <div class="topbar-left">
-            <button class="btn-hamburger" id="btnHamburger" aria-label="Abrir Menú">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
-            </button>
-            <div class="topbar-title">
-              <h2 id="currentTabTitle">Panel del Curso</h2>
-              <span id="currentCourseSubtitle">Cargando...</span>
+            <h3 class="flow-step-title">Evidencia Observable</h3>
+            <p class="flow-step-desc">Anotaciones de aula descriptivas sobre conductas de ejecución y resolución de tareas concretas.</p>
+            <div class="flow-card-footer">
+              <span class="flow-artifact-tag">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                Anotaciones cualitativas
+              </span>
             </div>
           </div>
 
-          <div class="topbar-right">
-            <div class="privacy-pill" id="privacyIndicator" title="Privacidad activa: los datos hacia la IA son anonimizados">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-              <span>Modo Anonimizado</span>
+          <!-- Paso 2 -->
+          <div class="flow-step-card" data-step="1">
+            <div class="flow-card-top">
+              <span class="flow-step-num">FASE 02</span>
+              <span class="flow-role-badge">Base de Datos</span>
             </div>
-            <button class="btn btn-sm btn-accent" id="btnNewCourse">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
-              Nuevo Curso
-            </button>
-          </div>
-        </header>
-
-        <!-- Contenedor Principal de Pestañas -->
-        <main class="main-container">
-
-          <!-- ========================================== -->
-          <!-- 1. PESTAÑA: PANEL GENERAL DEL CURSO -->
-          <!-- ========================================== -->
-          <section id="tab-dashboard" class="tab-pane active">
-            <!-- Ciclo Pedagógico Continuo (Sin emojis, con iconos SVG) -->
-            <div class="pedagogical-cycle">
-              <div class="cycle-step"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/></svg> Evidencia</div>
-              <div class="cycle-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" x2="19" y1="12" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
-              <div class="cycle-step"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg> Datos</div>
-              <div class="cycle-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" x2="19" y1="12" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
-              <div class="cycle-step"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/></svg> Indicadores</div>
-              <div class="cycle-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" x2="19" y1="12" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
-              <div class="cycle-step highlight"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg> IA Propone</div>
-              <div class="cycle-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" x2="19" y1="12" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
-              <div class="cycle-step highlight"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Docente Decide</div>
-              <div class="cycle-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" x2="19" y1="12" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
-              <div class="cycle-step"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m14.7 6.3 3 3a1 1 0 0 1 0 1.4l-7.3 7.3a2 2 0 0 1-1.4.6H5a1 1 0 0 1-1-1v-4a2 2 0 0 1 .6-1.4l7.3-7.3a1 1 0 0 1 1.4 0"/><path d="M16 2a2.83 2.83 0 0 1 4 4L17 9l-4-4Z"/></svg> Intervención</div>
-              <div class="cycle-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" x2="19" y1="12" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
-              <div class="cycle-step"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg> Medición</div>
+            <div class="flow-step-icon icon-cyan">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
             </div>
-
-            <!-- Métricas Globales del Curso -->
-            <div class="metrics-grid">
-              <div class="metric-card primary">
-                <span class="metric-label">Promedio del Grupo</span>
-                <span class="metric-value" id="courseAvgDisplay">--</span>
-                <span class="metric-desc" id="courseDescDisplay">Escala de 0 a 100</span>
-              </div>
-              <div class="metric-card priority">
-                <span class="metric-label"><span class="status-indicator status-priority"></span> Atención Prioritaria</span>
-                <span class="metric-value" id="priorityCountDisplay">0</span>
-                <span class="metric-desc">Casos con alertas críticas</span>
-              </div>
-              <div class="metric-card recommended">
-                <span class="metric-label"><span class="status-indicator status-recommended"></span> Revisión Recomendada</span>
-                <span class="metric-value" id="recommendedCountDisplay">0</span>
-                <span class="metric-desc">Disminución en actividades</span>
-              </div>
-              <div class="metric-card regular">
-                <span class="metric-label"><span class="status-indicator status-regular"></span> Seguimiento Regular</span>
-                <span class="metric-value" id="regularCountDisplay">0</span>
-                <span class="metric-desc">Trayectoria estable o en ascenso</span>
-              </div>
-            </div>
-
-            <!-- Tabla de Estudiantes -->
-            <div class="card">
-              <div class="card-header">
-                <div>
-                  <h3 class="card-title">Estudiantes y Seguimiento Formativo</h3>
-                  <p class="card-subtitle">Indicadores objetivos calculados por el motor determinístico sin sesgo de IA</p>
-                </div>
-                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                  <input type="text" id="studentSearchInput" class="form-control" placeholder="Buscar por código o nombre..." style="width: 220px;">
-                  <select id="filterAlertSelect" class="form-control" style="width: 190px;">
-                    <option value="all">Todas las alertas</option>
-                    <option value="priority">Atención prioritaria</option>
-                    <option value="recommended">Revisión recomendada</option>
-                    <option value="regular">Seguimiento regular</option>
-                  </select>
-                  <button class="btn btn-primary" id="btnNewStudent">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6"/><path d="M22 11h-6"/></svg>
-                    Estudiante
-                  </button>
-                  <button class="btn btn-accent" id="btnNewActivity">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
-                    Actividad
-                  </button>
-                </div>
-              </div>
-
-              <div class="table-responsive">
-                <table id="studentsTable">
-                  <thead>
-                    <tr>
-                      <th>Código</th>
-                      <th>Nombre del Estudiante</th>
-                      <th>Actividades</th>
-                      <th>Promedio</th>
-                      <th>Tendencia</th>
-                      <th>Alerta Responsable</th>
-                      <th>Intervenciones</th>
-                      <th style="text-align: right;">Acciones</th>
-                    </tr>
-                  </thead>
-                  <tbody id="studentsTableBody">
-                    <!-- Dinámico -->
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </section>
-
-          <!-- ========================================== -->
-          <!-- 2. PESTAÑA: FICHA INDIVIDUAL & IA -->
-          <!-- ========================================== -->
-          <section id="tab-student" class="tab-pane">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
-              <div style="display: flex; align-items: center; gap: 0.75rem;">
-                <label style="font-weight: 700; font-size: 0.85rem; color: #334155;">Estudiante a examinar:</label>
-                <select id="studentSelectInTab" class="form-control" style="min-width: 260px; font-weight: 600;">
-                  <!-- Dinámico -->
-                </select>
-              </div>
-              <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                <button class="btn btn-outline" id="btnPrintReport">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
-                  Informe PDF
-                </button>
-                <button class="btn btn-primary" id="btnRecordGrade">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-                  Calificar
-                </button>
-                <button class="btn btn-accent" id="btnNewInterventionForStudent">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m14.7 6.3 3 3a1 1 0 0 1 0 1.4l-7.3 7.3a2 2 0 0 1-1.4.6H5a1 1 0 0 1-1-1v-4a2 2 0 0 1 .6-1.4l7.3-7.3a1 1 0 0 1 1.4 0"/><path d="M16 2a2.83 2.83 0 0 1 4 4L17 9l-4-4Z"/></svg>
-                  Intervención
-                </button>
-              </div>
-            </div>
-
-            <!-- Resumen y Semáforo del Estudiante -->
-            <div class="card" id="studentHeaderCard" style="border-left: 5px solid #2563eb;">
-              <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-                <div>
-                  <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
-                    <h2 style="font-size: 1.35rem; font-weight: 800;" id="shStudentName">Cargando...</h2>
-                    <span class="badge" style="background:#f1f5f9; color:#334155;" id="shStudentCodeBadge">EST-000</span>
-                  </div>
-                  <p style="font-size: 0.85rem; color: var(--text-muted);" id="shStudentCourse">Curso</p>
-                </div>
-                <div style="display: flex; align-items: center; gap: 1.5rem;">
-                  <div style="text-align: right;">
-                    <div style="font-size: 0.72rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">Promedio Personal</div>
-                    <div style="font-size: 1.75rem; font-weight: 800; color: var(--text-main);" id="shStudentAvg">--</div>
-                  </div>
-                  <div id="shAlertContainer"></div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Gráficos Responsivos de Evolución y Competencias -->
-            <div class="charts-grid">
-              <div class="card" style="margin-bottom: 0;">
-                <div class="card-header">
-                  <div>
-                    <h3 class="card-title">Evolución Temporal & Regresión Lineal</h3>
-                    <p class="card-subtitle">Cálculo determinístico de pendiente sin sesgo de IA</p>
-                  </div>
-                  <span id="trendBadgeDetail" style="font-size: 0.8rem; font-weight: 700; color: #2563eb;"></span>
-                </div>
-                <div class="chart-container" id="trendChartContainer"></div>
-              </div>
-
-              <div class="card" style="margin-bottom: 0;">
-                <div class="card-header">
-                  <div>
-                    <h3 class="card-title">Desempeño por Competencias</h3>
-                    <p class="card-subtitle">Detección de fortalezas y brechas específicas</p>
-                  </div>
-                </div>
-                <div class="chart-container" id="competenciesChartContainer"></div>
-              </div>
-            </div>
-
-            <!-- Historial de Evaluaciones y Evidencias -->
-            <div class="card">
-              <div class="card-header">
-                <div>
-                  <h3 class="card-title">Historial de Evaluaciones y Evidencias Observables</h3>
-                  <p class="card-subtitle">Descripciones observables de conducta y resolución en aula</p>
-                </div>
-              </div>
-              <div class="table-responsive">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Fecha</th>
-                      <th>Actividad</th>
-                      <th>Competencia Asociada</th>
-                      <th>Tipo Evidencia</th>
-                      <th>Calificación</th>
-                      <th>Observación Cualitativa de Aula</th>
-                    </tr>
-                  </thead>
-                  <tbody id="studentGradesTableBody">
-                    <!-- Dinámico -->
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            <!-- Módulo Central de IA Pedagógica & Explicabilidad -->
-            <div class="card" style="border: 2px solid #3b82f6;">
-              <div class="card-header">
-                <div>
-                  <h3 class="card-title" style="color: #1d4ed8;">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>
-                    Componente de Inteligencia Artificial Contextualizada
-                  </h3>
-                  <p class="card-subtitle">Interpretaciones formativas con lenguaje prudente y auditoría de explicabilidad</p>
-                </div>
-                <div style="display: flex; gap: 0.5rem; align-items: center;">
-                  <button class="btn btn-primary" id="btnGenerateAI">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>
-                    Generar Retroalimentación
-                  </button>
-                </div>
-              </div>
-
-              <div id="aiOutputContainer">
-                <div style="text-align: center; padding: 2.5rem; color: #64748b;">
-                  <p style="font-size: 1rem; font-weight: 700; margin-bottom: 0.35rem;">Presiona "Generar Retroalimentación" para procesar las evidencias del estudiante.</p>
-                  <p style="font-size: 0.82rem; color: #94a3b8;">El sistema tomará los indicadores determinísticos y formulará una síntesis auditable.</p>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- ========================================== -->
-          <!-- 3. PESTAÑA: CICLO DE INTERVENCIÓN DOCENTE -->
-          <!-- ========================================== -->
-          <section id="tab-cycle" class="tab-pane">
-            <div class="card">
-              <div class="card-header">
-                <div>
-                  <h3 class="card-title">Acompañamiento e Intervención Continua</h3>
-                  <p class="card-subtitle">SeguIA mide el efecto de las decisiones pedagógicas (Antes vs. Después)</p>
-                </div>
-                <button class="btn btn-primary" id="btnOpenNewInterventionModal">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
-                  Nueva Intervención
-                </button>
-              </div>
-
-              <!-- Tarjeta de ejemplo del ciclo en el Briefing -->
-              <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: var(--radius); padding: 1rem 1.25rem; margin-bottom: 1.5rem;">
-                <h4 style="color: #1e40af; font-size: 0.9rem; margin-bottom: 0.4rem; font-weight: 800;">Ejemplo del ciclo funcionando en el Briefing SeguIA:</h4>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem; font-size: 0.82rem; color: #1e3a8a;">
-                  <div><strong>Situación detectada:</strong> Disminución en actividades de resolución de problemas</div>
-                  <div><strong>Recomendación sistema:</strong> Considerar actividad de refuerzo</div>
-                  <div><strong>Decisión profesor:</strong> Realizar taller adicional</div>
-                  <div><strong>Resultado antes:</strong> 55 / 100</div>
-                  <div><strong>Resultado después:</strong> 68 / 100 (+13 pts)</div>
-                </div>
-              </div>
-
-              <div class="table-responsive">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Estudiante</th>
-                      <th>Fecha</th>
-                      <th>Situación Detectada</th>
-                      <th>Decisión / Estrategia Docente</th>
-                      <th>Tipo Intervención</th>
-                      <th>Antes</th>
-                      <th>Después</th>
-                      <th>Impacto Medido</th>
-                      <th>Estado</th>
-                      <th>Acción</th>
-                    </tr>
-                  </thead>
-                  <tbody id="interventionsTableBody">
-                    <!-- Dinámico -->
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </section>
-
-          <!-- ========================================== -->
-          <!-- 4. PESTAÑA: LABORATORIO A/B & RÚBRICAS -->
-          <!-- ========================================== -->
-          <section id="tab-ab" class="tab-pane">
-            <div class="card">
-              <div class="card-header">
-                <div>
-                  <h3 class="card-title">Laboratorio Comparativo A/B (Sección 6 del Briefing)</h3>
-                  <p class="card-subtitle">Demostración experimental: IA con nota aislada vs. SeguIA con contexto e indicadores</p>
-                </div>
-                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                  <select id="abStudentSelect" class="form-control" style="width: 230px;">
-                    <!-- Dinámico -->
-                  </select>
-                  <button class="btn btn-primary" id="btnRunABTest">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>
-                    Ejecutar Comparativa A/B
-                  </button>
-                </div>
-              </div>
-
-              <div class="ab-container" id="abResultsContainer">
-                <!-- Escenario A -->
-                <div class="scenario-card scenario-a">
-                  <span class="scenario-badge">ESCENARIO A: IA TRADICIONAL (NOTA AISLADA)</span>
-                  <div style="font-size: 0.82rem; color: #7f1d1d; background: #fef2f2; padding: 0.6rem; border-radius: 6px; margin-bottom: 0.75rem;">
-                    <strong>Prompt entregado:</strong> "El estudiante Juan obtuvo 55/100. Genera una retroalimentación."
-                  </div>
-                  <div style="font-size: 0.88rem; line-height: 1.5; color: #334155; margin-bottom: 1rem; flex: 1;">
-                    <em>"El estudiante ha obtenido una calificación deficiente de 55/100. Se encuentra reprobando y debe esforzarse más, dedicar más horas de estudio en casa y mejorar su compromiso para no perder la asignatura."</em>
-                  </div>
-                  <div style="background: #fee2e2; border-left: 3px solid #ef4444; padding: 0.65rem; border-radius: 4px; font-size: 0.78rem; color: #991b1b;">
-                    <strong>LIMITACIONES PEDAGÓGICAS:</strong><br>
-                    • Diagnóstico punitivo ("calificación deficiente").<br>
-                    • No identifica competencias específicas.<br>
-                    • Ignora la trayectoria previa.<br>
-                    • No brinda ninguna acción concreta para el docente.
-                  </div>
-                  <div style="margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid #fee2e2; font-size: 0.85rem; font-weight: 700; color: #b91c1c;">
-                    Puntuación en Rúbrica: 1.8 / 5.0
-                  </div>
-                </div>
-
-                <!-- Escenario B -->
-                <div class="scenario-card scenario-b">
-                  <span class="scenario-badge">ESCENARIO B: SEGUIA (CONTEXTUALIZADO)</span>
-                  <div style="font-size: 0.82rem; color: #064e3b; background: #f0fdf4; padding: 0.6rem; border-radius: 6px; margin-bottom: 0.75rem;">
-                    <strong>Prompt enriquecido:</strong> Historial + Competencias (Resolución 58 vs Álgebra 82) + Pendiente lineal (-3.2) + 3 caídas consecutivas + Observaciones de aula.
-                  </div>
-                  <div style="font-size: 0.88rem; line-height: 1.5; color: #334155; margin-bottom: 1rem; flex: 1;">
-                    <em>"El estudiante comprende los conceptos formales (82 en álgebra), pero presenta bloqueo procedimental en problemas de texto largo. Se sugiere al docente realizar un taller de refuerzo guiado en descomposición heurística de enunciados."</em>
-                  </div>
-                  <div style="background: #dcfce7; border-left: 3px solid #10b981; padding: 0.65rem; border-radius: 4px; font-size: 0.78rem; color: #14532d;">
-                    <strong>FORTALEZAS PEDAGÓGICAS:</strong><br>
-                    • Lenguaje prudente y formativo.<br>
-                    • Explicabilidad auditable basada en datos objetivos.<br>
-                    • Reconoce bases conceptuales y aísla la dificultad.<br>
-                    • Empodera la decisión didáctica del docente.
-                  </div>
-                  <div style="margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid #bbf7d0; font-size: 0.85rem; font-weight: 700; color: #15803d;">
-                    Puntuación en Rúbrica: 4.9 / 5.0
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Rúbrica de Evaluación Pedagógica -->
-            <div class="card">
-              <div class="card-header">
-                <div>
-                  <h3 class="card-title">Rúbrica de Validación Pedagógica de Retroalimentaciones</h3>
-                  <p class="card-subtitle">Auditoría con los 6 criterios pedagógicos establecidos en el briefing</p>
-                </div>
-              </div>
-
-              <div class="table-responsive">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Criterio Pedagógico</th>
-                      <th>Pregunta Guía que Responde</th>
-                      <th>Puntaje (1 a 5)</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><strong>1. Pertinencia</strong></td>
-                      <td>¿Corresponde con los resultados registrados objetivamente?</td>
-                      <td><input type="number" id="rubric_rel" min="1" max="5" value="5" class="form-control" style="width: 70px;"></td>
-                    </tr>
-                    <tr>
-                      <td><strong>2. Claridad</strong></td>
-                      <td>¿Es comprensible y transparente para el docente?</td>
-                      <td><input type="number" id="rubric_cla" min="1" max="5" value="5" class="form-control" style="width: 70px;"></td>
-                    </tr>
-                    <tr>
-                      <td><strong>3. Coherencia</strong></td>
-                      <td>¿Hay relación lógica entre evidencias, indicadores y recomendación?</td>
-                      <td><input type="number" id="rubric_coh" min="1" max="5" value="5" class="form-control" style="width: 70px;"></td>
-                    </tr>
-                    <tr>
-                      <td><strong>4. Utilidad Pedagógica</strong></td>
-                      <td>¿Ayuda efectivamente al profesor a tomar una decisión de aula?</td>
-                      <td><input type="number" id="rubric_uti" min="1" max="5" value="5" class="form-control" style="width: 70px;"></td>
-                    </tr>
-                    <tr>
-                      <td><strong>5. Sustento en Datos</strong></td>
-                      <td>¿Evita afirmaciones sin respaldo en los indicadores del motor?</td>
-                      <td><input type="number" id="rubric_sus" min="1" max="5" value="5" class="form-control" style="width: 70px;"></td>
-                    </tr>
-                    <tr>
-                      <td><strong>6. Lenguaje Apropiado</strong></td>
-                      <td>¿Evita etiquetas punitivas o diagnósticos definitivos?</td>
-                      <td><input type="number" id="rubric_len" min="1" max="5" value="5" class="form-control" style="width: 70px;"></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              <div style="margin-top: 1.25rem; display: flex; flex-direction: column; gap: 0.4rem;">
-                <label style="font-size: 0.82rem; font-weight: 700;">Comentarios u observaciones pedagógicas del docente:</label>
-                <textarea id="rubricComments" class="form-control" rows="2" placeholder="Escribe tus observaciones docentes sobre la calidad pedagógica de la IA..."></textarea>
-              </div>
-
-              <div style="margin-top: 1rem; display: flex; justify-content: flex-end;">
-                <button class="btn btn-primary" id="btnSubmitRubric">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-                  Guardar Evaluación de Rúbrica
-                </button>
-              </div>
-            </div>
-          </section>
-
-          <!-- ========================================== -->
-          <!-- 5. PESTAÑA: UMBRALES & CONFIGURACIÓN -->
-          <!-- ========================================== -->
-          <section id="tab-settings" class="tab-pane">
-            <div class="card">
-              <div class="card-header">
-                <div>
-                  <h3 class="card-title">Configuración de Alertas Responsables y Ética del Sistema</h3>
-                  <p class="card-subtitle">Umbrales configurables según asignatura y nivel institucional</p>
-                </div>
-                <button class="btn btn-primary" id="btnSaveSettings">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/></svg>
-                  Guardar Configuraciones
-                </button>
-              </div>
-
-              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
-                <div class="form-group">
-                  <label>Disminuciones consecutivas para Alerta de Revisión:</label>
-                  <input type="number" id="cfg_consecutive_drops" class="form-control" min="2" max="10" value="3">
-                  <small style="color: var(--text-muted); font-size: 0.75rem;">Número de actividades continuas en descenso.</small>
-                </div>
-
-                <div class="form-group">
-                  <label>Caída mínima en puntos para considerar descenso significativo:</label>
-                  <input type="number" id="cfg_drop_delta" class="form-control" min="5" max="30" value="10">
-                  <small style="color: var(--text-muted); font-size: 0.75rem;">Delta en puntos entre actividades o periodos.</small>
-                </div>
-
-                <div class="form-group">
-                  <label>Pendiente crítica de regresión para Atención Prioritaria:</label>
-                  <input type="number" id="cfg_priority_slope" class="form-control" step="0.1" value="-1.5">
-                  <small style="color: var(--text-muted); font-size: 0.75rem;">Tasa de variación por actividad (ej. -1.5 pts/actividad).</small>
-                </div>
-
-                <div class="form-group">
-                  <label>Umbral de Brecha entre Competencias:</label>
-                  <input type="number" id="cfg_competency_gap" class="form-control" value="12">
-                  <small style="color: var(--text-muted); font-size: 0.75rem;">Puntos por debajo de la media personal para alertar competencia.</small>
-                </div>
-
-                <div class="form-group">
-                  <label>Google Gemini API Key:</label>
-                  <input type="password" id="cfg_gemini_api_key" class="form-control" placeholder="Clave configurada">
-                  <small style="color: var(--text-muted); font-size: 0.75rem;">Clave activa en la nube para retroalimentación en tiempo real.</small>
-                </div>
-
-                <div class="form-group">
-                  <label>Modelo de Gemini Activo:</label>
-                  <select id="cfg_gemini_model" class="form-control">
-                    <option value="gemini-3.8-flash">gemini-3.8-flash (Recomendado y verificado)</option>
-                    <option value="gemini-1.5-flash">gemini-1.5-flash</option>
-                  </select>
-                </div>
-
-                <div class="form-group" style="grid-column: 1 / -1; display: flex; align-items: center; gap: 0.75rem; background: #f8fafc; padding: 1rem; border-radius: 8px;">
-                  <input type="checkbox" id="cfg_anonymize" checked style="width: 18px; height: 18px; cursor: pointer;">
-                  <div>
-                    <label for="cfg_anonymize" style="cursor: pointer; font-weight: 700;">Anonimizar identificadores en la capa de IA (Principio de Privacidad)</label>
-                    <div style="font-size: 0.78rem; color: var(--text-muted);">Uso de identificadores internos (ej. EST-001) para no enviar nombres ni datos sensibles a servicios externos.</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- ========================================== -->
-          <!-- 6. PESTAÑA: DECÁLOGO ÉTICO -->
-          <!-- ========================================== -->
-          <section id="tab-ethics" class="tab-pane">
-            <div class="card">
-              <div class="card-header">
-                <div>
-                  <h3 class="card-title">Decálogo Pedagógico y Límites del Sistema ("Lo que SeguIA NO es")</h3>
-                  <p class="card-subtitle">Sección 9 del Briefing Pedagógico: Reconocer los límites fortalece la credibilidad ética del proyecto</p>
-                </div>
-              </div>
-
-              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.25rem;">
-                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #ef4444; border-radius: 8px; padding: 1.2rem;">
-                  <h4 style="color: #991b1b; font-size: 0.92rem; margin-bottom: 0.4rem; font-weight: 800;">1. No sustituye la valoración profesional del docente</h4>
-                  <p style="font-size: 0.85rem; color: #475569;">El juicio pedagógico, la empatía y la comprensión del contexto vital del estudiante corresponden exclusivamente al ser humano educador.</p>
-                </div>
-
-                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #ef4444; border-radius: 8px; padding: 1.2rem;">
-                  <h4 style="color: #991b1b; font-size: 0.92rem; margin-bottom: 0.4rem; font-weight: 800;">2. No hace diagnósticos psicológicos ni clínicos</h4>
-                  <p style="font-size: 0.85rem; color: #475569;">El sistema jamás califica trastornos de aprendizaje ni emite juicios de valor sobre capacidades cognitivas innatas.</p>
-                </div>
-
-                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #ef4444; border-radius: 8px; padding: 1.2rem;">
-                  <h4 style="color: #991b1b; font-size: 0.92rem; margin-bottom: 0.4rem; font-weight: 800;">3. No determina si un estudiante aprobará o reprobará</h4>
-                  <p style="font-size: 0.85rem; color: #475569;">No realiza predicciones fatalistas; señala trayectorias con el fin de orientar intervenciones tempranas.</p>
-                </div>
-
-                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #ef4444; border-radius: 8px; padding: 1.2rem;">
-                  <h4 style="color: #991b1b; font-size: 0.92rem; margin-bottom: 0.4rem; font-weight: 800;">4. No interpreta correlación como causa</h4>
-                  <p style="font-size: 0.85rem; color: #475569;">Una baja nota en una competencia no implica negligencia ni falta de talento; se reportan datos objetivos para análisis del docente.</p>
-                </div>
-
-                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #ef4444; border-radius: 8px; padding: 1.2rem;">
-                  <h4 style="color: #991b1b; font-size: 0.92rem; margin-bottom: 0.4rem; font-weight: 800;">5. Depende de la calidad de los datos del docente</h4>
-                  <p style="font-size: 0.85rem; color: #475569;">La validez de las interpretaciones es proporcional a la precisión de las evidencias y a la riqueza descriptiva de las observaciones de aula.</p>
-                </div>
-
-                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #ef4444; border-radius: 8px; padding: 1.2rem;">
-                  <h4 style="color: #991b1b; font-size: 0.92rem; margin-bottom: 0.4rem; font-weight: 800;">6. Requiere supervisión humana obligatoria</h4>
-                  <p style="font-size: 0.85rem; color: #475569;">Toda retroalimentación de IA debe ser auditada mediante su ficha de explicabilidad y aprobada por el educador antes de actuar.</p>
-                </div>
-              </div>
-            </div>
-          </section>
-
-        </main>
-
-        <!-- Pie de página -->
-        <footer class="app-footer">
-          <div class="footer-content">
-            <div>
-              <strong>SeguIA</strong> — Sistema Inteligente de Seguimiento Académico y Retroalimentación Docente.<br>
-              <em>Proyecto de: Cristóbal Martínez & Jainer Salas</em>
-            </div>
-            <div style="text-align: right;">
-              Lema: <em>"La IA propone, los datos sustentan y el docente decide."</em>
+            <h3 class="flow-step-title">Datos Consolidados</h3>
+            <p class="flow-step-desc">Consolidación cronológica por competencias curriculares para aislar dificultades específicas.</p>
+            <div class="flow-card-footer">
+              <span class="flow-artifact-tag">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                Matriz por competencias
+              </span>
             </div>
           </div>
-        </footer>
+
+          <!-- Paso 3 -->
+          <div class="flow-step-card" data-step="2">
+            <div class="flow-card-top">
+              <span class="flow-step-num">FASE 03</span>
+              <span class="flow-role-badge">Motor Estadístico</span>
+            </div>
+            <div class="flow-step-icon icon-indigo">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/></svg>
+            </div>
+            <h3 class="flow-step-title">Indicadores Objetivos</h3>
+            <p class="flow-step-desc">Cálculo matemático estricto de pendiente ($m$), caídas consecutivas y semáforo responsable sin sesgos.</p>
+            <div class="flow-card-footer">
+              <span class="flow-artifact-tag">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                Regresión y alertas
+              </span>
+            </div>
+          </div>
+
+          <!-- Paso 4 -->
+          <div class="flow-step-card highlight-ai" data-step="3">
+            <div class="flow-card-top">
+              <span class="flow-step-num" style="color: var(--color-primary);">FASE 04</span>
+              <span class="flow-role-badge badge-ai">Gemini 3.8 Flash</span>
+            </div>
+            <div class="flow-step-icon icon-primary">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>
+            </div>
+            <h3 class="flow-step-title">IA Contextualizada Propone</h3>
+            <p class="flow-step-desc">Generación formativa con lenguaje prudente, honestidad ante falta de datos y ficha de explicabilidad.</p>
+            <div class="flow-card-footer">
+              <span class="flow-artifact-tag tag-ai">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                Propuesta explicable
+              </span>
+            </div>
+          </div>
+
+          <!-- Paso 5 -->
+          <div class="flow-step-card highlight-teacher" data-step="4">
+            <div class="flow-card-top">
+              <span class="flow-step-num" style="color: #0f172a;">FASE 05</span>
+              <span class="flow-role-badge badge-teacher">Humano en el Bucle</span>
+            </div>
+            <div class="flow-step-icon icon-dark">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <h3 class="flow-step-title">Docente Decide</h3>
+            <p class="flow-step-desc">El profesor valida, ajusta o descarta la sugerencia con empatía y comprensión del contexto del estudiante.</p>
+            <div class="flow-card-footer">
+              <span class="flow-artifact-tag tag-teacher">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                Decisión profesional
+              </span>
+            </div>
+          </div>
+
+          <!-- Paso 6 -->
+          <div class="flow-step-card" data-step="5">
+            <div class="flow-card-top">
+              <span class="flow-step-num">FASE 06</span>
+              <span class="flow-role-badge">Didáctica Focalizada</span>
+            </div>
+            <div class="flow-step-icon icon-purple">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m14.7 6.3 3 3a1 1 0 0 1 0 1.4l-7.3 7.3a2 2 0 0 1-1.4.6H5a1 1 0 0 1-1-1v-4a2 2 0 0 1 .6-1.4l7.3-7.3a1 1 0 0 1 1.4 0"/><path d="M16 2a2.83 2.83 0 0 1 4 4L17 9l-4-4Z"/></svg>
+            </div>
+            <h3 class="flow-step-title">Intervención de Aula</h3>
+            <p class="flow-step-desc">Aplicación de acciones específicas: taller remedial guiado, modelamiento de enunciados o tutoría entre pares.</p>
+            <div class="flow-card-footer">
+              <span class="flow-artifact-tag">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                Taller remedial ejecutado
+              </span>
+            </div>
+          </div>
+
+          <!-- Paso 7 -->
+          <div class="flow-step-card" data-step="6">
+            <div class="flow-card-top">
+              <span class="flow-step-num">FASE 07</span>
+              <span class="flow-role-badge">Cierre de Ciclo</span>
+            </div>
+            <div class="flow-step-icon icon-emerald">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+            </div>
+            <h3 class="flow-step-title">Medición de Impacto</h3>
+            <p class="flow-step-desc">Registro de la siguiente calificación para cuantificar la efectividad de la intervención (ej. +13 pts).</p>
+            <div class="flow-card-footer">
+              <span class="flow-artifact-tag tag-success">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                Impacto cuantificado
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
 
-    </div>
-  </div>
-
-  <!-- ======================================================== -->
-  <!-- 3. MODALES DE INTERACCIÓN -->
-  <!-- ======================================================== -->
-
-  <!-- Modal: Registrar Calificación y Evidencia -->
-  <div class="modal-overlay" id="modalGrade">
-    <div class="modal">
-      <div class="modal-header">
-        <h3>Registrar Calificación & Evidencia</h3>
-        <button class="modal-close" data-close="modalGrade" aria-label="Cerrar">&times;</button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label>Estudiante:</label>
-          <select id="gradeStudentSelect" class="form-control"></select>
-        </div>
-        <div class="form-group">
-          <label>Actividad del Curso:</label>
-          <select id="gradeActivitySelect" class="form-control"></select>
-        </div>
-        <div class="form-group">
-          <label>Calificación Obtenida (0 a 100):</label>
-          <input type="number" id="gradeScoreInput" class="form-control" min="0" max="100" placeholder="Ej. 78">
-        </div>
-        <div class="form-group">
-          <label>Tipo de Evidencia:</label>
-          <select id="gradeEvidenceType" class="form-control">
-            <option value="Taller resuelto">Taller / Guía escrita</option>
-            <option value="Evaluación sumativa">Evaluación sumativa</option>
-            <option value="Quiz rápido">Quiz conceptual</option>
-            <option value="Sustentación oral">Sustentación oral / Exposición</option>
-            <option value="Proyecto práctico">Proyecto práctico / Laboratorio</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Observación Cualitativa Descriptiva de Aula (Obligatoria para la IA):</label>
-          <textarea id="gradeObservationInput" class="form-control" rows="3" placeholder="Ej. 'Resolvió bien los ejercicios directos; dificultad puntual al formular incógnitas en problemas verbales...'"></textarea>
-          <small style="color: var(--text-muted); font-size: 0.75rem;">Evite etiquetas como 'es flojo'; registre conductas observables de ejecución.</small>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" data-close="modalGrade">Cancelar</button>
-        <button class="btn btn-primary" id="btnSaveGradeSubmit">Guardar Calificación</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal: Registrar Intervención Docente -->
-  <div class="modal-overlay" id="modalIntervention">
-    <div class="modal">
-      <div class="modal-header">
-        <h3>Registrar Intervención Pedagógica Docente</h3>
-        <button class="modal-close" data-close="modalIntervention" aria-label="Cerrar">&times;</button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label>Estudiante:</label>
-          <select id="intStudentSelect" class="form-control"></select>
-        </div>
-        <div class="form-group">
-          <label>Situación Detectada:</label>
-          <input type="text" id="intSituationInput" class="form-control" placeholder="Ej. Disminución en resolución de problemas (55/100)">
-        </div>
-        <div class="form-group">
-          <label>Recomendación de la IA (Sugerencia):</label>
-          <textarea id="intAiSummaryInput" class="form-control" rows="2" placeholder="Sugerencia formulada por el sistema..."></textarea>
-        </div>
-        <div class="form-group">
-          <label>Decisión Pedagógica del Docente ("El docente decide"):</label>
-          <textarea id="intTeacherDecisionInput" class="form-control" rows="2" placeholder="Ej. Realizar taller de refuerzo en parejas y tutoría guiada..."></textarea>
-        </div>
-        <div class="form-group">
-          <label>Tipo de Intervención:</label>
-          <select id="intTypeSelect" class="form-control">
-            <option value="Taller de refuerzo">Taller de refuerzo adicional</option>
-            <option value="Tutoría entre pares">Tutoría entre pares</option>
-            <option value="Material adaptado">Material adaptado / Guía paso a paso</option>
-            <option value="Diálogo pedagógico">Diálogo pedagógico reflexivo</option>
-            <option value="Ajuste metodológico">Ajuste metodológico en aula</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Calificación Antes de la Intervención:</label>
-          <input type="number" id="intScoreBeforeInput" class="form-control" min="0" max="100" placeholder="Ej. 55">
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" data-close="modalIntervention">Cancelar</button>
-        <button class="btn btn-primary" id="btnSaveInterventionSubmit">Guardar Intervención</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal: Evaluar Resultado Post-Intervención -->
-  <div class="modal-overlay" id="modalEvaluateIntervention">
-    <div class="modal">
-      <div class="modal-header">
-        <h3>Evaluar Impacto de la Intervención (Cerrar Ciclo)</h3>
-        <button class="modal-close" data-close="modalEvaluateIntervention" aria-label="Cerrar">&times;</button>
-      </div>
-      <div class="modal-body">
-        <input type="hidden" id="evalIntId">
-        <p style="font-size: 0.88rem;" id="evalIntDesc">Evaluando intervención...</p>
-        <div class="form-group">
-          <label>Calificación Obtenida Después de la Intervención:</label>
-          <input type="number" id="evalScoreAfterInput" class="form-control" min="0" max="100" placeholder="Ej. 68">
-        </div>
-        <div class="form-group">
-          <label>Estado Final:</label>
-          <select id="evalStatusSelect" class="form-control">
-            <option value="Superada con éxito">Superada con éxito</option>
-            <option value="En curso">En curso / Progreso parcial</option>
-            <option value="Requiere refuerzo continuo">Requiere refuerzo continuo</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Notas de Conclusión Docente:</label>
-          <textarea id="evalNotesInput" class="form-control" rows="2" placeholder="Observaciones finales sobre el avance del estudiante..."></textarea>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" data-close="modalEvaluateIntervention">Cancelar</button>
-        <button class="btn btn-primary" id="btnSaveEvalInterventionSubmit">Guardar Evaluación</button>
+      <!-- Indicadores de Progreso Inferiores -->
+      <div class="flow-dots-bar" id="flowDotsBar">
+        <button class="flow-dot active" data-step="0" aria-label="Ir a fase 1"></button>
+        <button class="flow-dot" data-step="1" aria-label="Ir a fase 2"></button>
+        <button class="flow-dot" data-step="2" aria-label="Ir a fase 3"></button>
+        <button class="flow-dot" data-step="3" aria-label="Ir a fase 4"></button>
+        <button class="flow-dot" data-step="4" aria-label="Ir a fase 5"></button>
+        <button class="flow-dot" data-step="5" aria-label="Ir a fase 6"></button>
+        <button class="flow-dot" data-step="6" aria-label="Ir a fase 7"></button>
       </div>
     </div>
-  </div>
+  </section>
 
-  <!-- Modal: Nueva Actividad -->
-  <div class="modal-overlay" id="modalNewActivity">
-    <div class="modal">
-      <div class="modal-header">
-        <h3>Nueva Actividad de Aprendizaje</h3>
-        <button class="modal-close" data-close="modalNewActivity" aria-label="Cerrar">&times;</button>
+  <!-- ==========================================================================
+       Pilares Fundacionales de SeguIA
+       ========================================================================== -->
+  <section class="pillars-section" id="pilares">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+          Principios Rectores
+        </span>
+        <h2 class="section-title">Pilares Técnicos y Pedagógicos</h2>
+        <p class="section-description">
+          Diseñado bajo un riguroso marco formativo institucional para garantizar rigor metodológico, ética y utilidad práctica en el aula.
+        </p>
       </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label>Título de la Actividad:</label>
-          <input type="text" id="actTitleInput" class="form-control" placeholder="Ej. Taller 3: Sistemas de ecuaciones">
+
+      <div class="pillars-grid">
+        <!-- Pilar 1 -->
+        <div class="pillar-card">
+          <div class="pillar-icon-box pillar-icon-blue">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+          </div>
+          <h3 class="pillar-title">Motor Determinístico</h3>
+          <p class="pillar-desc">
+            <strong>"La IA no hace los cálculos".</strong> Los promedios, pendientes de regresión lineal ($m$) y caídas consecutivas son calculados por algoritmos matemáticos estrictos antes de consultar al modelo de IA, evitando sesgos o invenciones numéricas.
+          </p>
+          <div class="pillar-feature-list">
+            <div class="pillar-feature-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              <span>Regresión lineal simple ($m$, intercepto, $r^2$)</span>
+            </div>
+            <div class="pillar-feature-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              <span>Detección de patrones de descenso continuo</span>
+            </div>
+            <div class="pillar-feature-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              <span>Semáforo de Alertas Responsables configurable</span>
+            </div>
+          </div>
         </div>
-        <div class="form-group">
-          <label>Competencia Evaluada:</label>
-          <select id="actCompSelect" class="form-control"></select>
+
+        <!-- Pilar 2 -->
+        <div class="pillar-card">
+          <div class="pillar-icon-box pillar-icon-emerald">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+          </div>
+          <h3 class="pillar-title">IA Contextualizada y Ética</h3>
+          <p class="pillar-desc">
+            La retroalimentación generada emplea un lenguaje prudente, nunca punitivo ni clínico. Ante menos de 3 actividades evaluadas, el sistema reconoce honestamente la falta de datos sin forzar conclusiones precipitadas.
+          </p>
+          <div class="pillar-feature-list">
+            <div class="pillar-feature-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              <span>Prohibición de diagnósticos psicológicos</span>
+            </div>
+            <div class="pillar-feature-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              <span>Honestidad metodológica ante escasez de datos</span>
+            </div>
+            <div class="pillar-feature-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              <span>Ficha obligatoria: "¿Por qué aparece esta alerta?"</span>
+            </div>
+          </div>
         </div>
-        <div class="form-group">
-          <label>Tipo de Actividad:</label>
-          <select id="actTypeSelect" class="form-control">
-            <option value="Taller">Taller aplicado</option>
-            <option value="Quiz">Quiz de comprobación</option>
-            <option value="Examen">Evaluación sumativa</option>
-            <option value="Proyecto">Proyecto / Ensayo</option>
-          </select>
+
+        <!-- Pilar 3 -->
+        <div class="pillar-card">
+          <div class="pillar-icon-box pillar-icon-amber">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <h3 class="pillar-title">Privacidad por Diseño</h3>
+          <p class="pillar-desc">
+            Protección integral de datos personales. SeguIA implementa de forma nativa la anonimización de identificadores (<span style="font-family: var(--font-mono); font-size: 0.85em; background: #f1f5f9; padding: 2px 6px; border-radius: 4px;">EST-001</span>), asegurando que ningún nombre real sea enviado a servicios externos.
+          </p>
+          <div class="pillar-feature-list">
+            <div class="pillar-feature-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              <span>Anonimización obligatoria configurable</span>
+            </div>
+            <div class="pillar-feature-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              <span>Resguardo de la identidad en peticiones LLM</span>
+            </div>
+            <div class="pillar-feature-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              <span>Cumplimiento con directrices educativas</span>
+            </div>
+          </div>
         </div>
-        <div class="form-group">
-          <label>Fecha de la Actividad:</label>
-          <input type="date" id="actDateInput" class="form-control">
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" data-close="modalNewActivity">Cancelar</button>
-        <button class="btn btn-primary" id="btnSaveActivitySubmit">Crear Actividad</button>
       </div>
     </div>
-  </div>
+  </section>
 
-  <!-- Modal: Nuevo Estudiante -->
-  <div class="modal-overlay" id="modalNewStudent">
-    <div class="modal">
-      <div class="modal-header">
-        <h3>Registrar Nuevo Estudiante</h3>
-        <button class="modal-close" data-close="modalNewStudent" aria-label="Cerrar">&times;</button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label>Código Interno / Anónimo:</label>
-          <input type="text" id="stuCodeInput" class="form-control" placeholder="Ej. EST-006">
+  <!-- ==========================================================================
+       Simulador Interactivo del Motor Determinístico
+       ========================================================================== -->
+  <section class="calculator-section" id="calculadora">
+    <div class="container">
+      <div class="calculator-wrapper">
+        <div class="calc-info">
+          <span class="badge badge-primary" style="background: rgba(37, 99, 235, 0.2); color: #93c5fd; border-color: rgba(37, 99, 235, 0.4); margin-bottom: 0.75rem;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/></svg>
+            Simulador en Tiempo Real
+          </span>
+          <h3>Prueba el Motor Estadístico Determinístico</h3>
+          <p>
+            Modifica las calificaciones o selecciona uno de los perfiles predefinidos para observar cómo el algoritmo de SeguIA calcula la pendiente de regresión lineal, el conteo de caídas y la clasificación de alerta responsable de forma instantánea.
+          </p>
+
+          <div class="calc-preset-bar">
+            <span style="font-size: 0.75rem; color: var(--color-slate-400); align-self: center; margin-right: 0.25rem;">Cargar caso:</span>
+            <button class="calc-preset-btn active" data-preset="juanCamilo">Juan Camilo (Descenso)</button>
+            <button class="calc-preset-btn" data-preset="progression">Evolución Favorable</button>
+            <button class="calc-preset-btn" data-preset="stable">Desempeño Regular</button>
+          </div>
+
+          <div class="calc-inputs-grid">
+            <div class="calc-input-cell">
+              <label>Act. 1</label>
+              <input type="number" id="calcScore1" min="0" max="100" value="85">
+            </div>
+            <div class="calc-input-cell">
+              <label>Act. 2</label>
+              <input type="number" id="calcScore2" min="0" max="100" value="76">
+            </div>
+            <div class="calc-input-cell">
+              <label>Act. 3</label>
+              <input type="number" id="calcScore3" min="0" max="100" value="68">
+            </div>
+            <div class="calc-input-cell">
+              <label>Act. 4</label>
+              <input type="number" id="calcScore4" min="0" max="100" value="59">
+            </div>
+            <div class="calc-input-cell">
+              <label>Act. 5</label>
+              <input type="number" id="calcScore5" min="0" max="100" value="55">
+            </div>
+          </div>
+
+          <p style="font-size: 0.78rem; color: var(--color-slate-400); margin-bottom: 0;">
+            Fórmula matemática ejecutada: Pendiente simple de regresión por mínimos cuadrados ordinaros $m = \frac{n \sum xy - \sum x \sum y}{n \sum x^2 - (\sum x)^2}$.
+          </p>
         </div>
-        <div class="form-group">
-          <label>Nombre Completo:</label>
-          <input type="text" id="stuNameInput" class="form-control" placeholder="Ej. Andrea Morales">
+
+        <!-- Panel de Resultados del Simulador -->
+        <div class="calc-output-box">
+          <div class="calc-metrics-row">
+            <div class="calc-metric-card">
+              <div class="calc-metric-title">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                Promedio Ponderado
+              </div>
+              <div class="calc-metric-value" id="calcResAvg">68.6 / 100</div>
+              <div class="calc-metric-sub">Suma aritmética / n actividades</div>
+            </div>
+
+            <div class="calc-metric-card">
+              <div class="calc-metric-title">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/></svg>
+                Pendiente Lineal (m)
+              </div>
+              <div class="calc-metric-value" id="calcResSlope">-7.50 pts/act</div>
+              <div class="calc-metric-sub">Tasa de variación temporal</div>
+            </div>
+          </div>
+
+          <div class="calc-metrics-row">
+            <div class="calc-metric-card">
+              <div class="calc-metric-title">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/></svg>
+                Caídas Consecutivas
+              </div>
+              <div class="calc-metric-value" id="calcResDrops">4 continuas</div>
+              <div class="calc-metric-sub">Evaluaciones con descenso</div>
+            </div>
+
+            <div class="calc-metric-card">
+              <div class="calc-metric-title">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Auditoría Explicabilidad
+              </div>
+              <div class="calc-metric-value" style="font-size: 1.15rem; color: #93c5fd;">Determinística</div>
+              <div class="calc-metric-sub">Transparencia algorítmica</div>
+            </div>
+          </div>
+
+          <!-- Banner Dinámico de Alerta -->
+          <div class="calc-alert-banner priority" id="calcAlertBanner">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <div class="calc-alert-text">
+              <strong id="calcAlertTitle">Atención Prioritaria Requerida</strong>
+              <span id="calcAlertDesc">Factores: Pendiente crítica descendente y 4 caídas continuas. Se sugiere diseñar un refuerzo guiado.</span>
+            </div>
+          </div>
+
+          <div class="calc-explicability-box">
+            <strong>Ficha de Explicabilidad para el Docente:</strong>
+            <span id="calcExplicabilityText">Regresión lineal calculada objetivamente. El motor convencional reporta los datos sin inferencias presuntivas.</span>
+          </div>
         </div>
-        <div class="form-group">
-          <label>Notas Iniciales:</label>
-          <input type="text" id="stuNotesInput" class="form-control" placeholder="Observaciones preliminares...">
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" data-close="modalNewStudent">Cancelar</button>
-        <button class="btn btn-primary" id="btnSaveStudentSubmit">Registrar Estudiante</button>
       </div>
     </div>
-  </div>
+  </section>
 
-  <!-- Modal: Nuevo Curso -->
-  <div class="modal-overlay" id="modalNewCourse">
-    <div class="modal">
-      <div class="modal-header">
-        <h3>Crear Nuevo Curso Académico</h3>
-        <button class="modal-close" data-close="modalNewCourse" aria-label="Cerrar">&times;</button>
+  <!-- ==========================================================================
+       Laboratorio Comparativo A/B & Rúbricas
+       ========================================================================== -->
+  <section class="ab-section" id="laboratorio-ab">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>
+          Evidencia Experimental
+        </span>
+        <h2 class="section-title">Laboratorio Comparativo A/B</h2>
+        <p class="section-description">
+          Demostración experimental: Contraste empírico entre la IA tradicional con una sola nota aislada versus SeguIA contextualizado con trayectoria e indicadores.
+        </p>
       </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label>Código del Curso:</label>
-          <input type="text" id="courseCodeInput" class="form-control" placeholder="Ej. MAT-902">
+
+      <div class="ab-card-grid">
+        <!-- Escenario A -->
+        <div class="ab-scenario-card scenario-a">
+          <span class="scenario-badge-top">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            Escenario A: IA Tradicional (Nota Aislada)
+          </span>
+
+          <div class="scenario-prompt-box">
+            <strong>Entrada suministrada al modelo:</strong><br>
+            "El estudiante Juan obtuvo 55/100. Genera una retroalimentación."
+          </div>
+
+          <div class="scenario-output-quote">
+            <em>"El estudiante ha obtenido una calificación deficiente de 55/100. Se encuentra reprobando la asignatura y debe esforzarse más, dedicar más horas de estudio en casa y mejorar su compromiso para no perder la materia."</em>
+          </div>
+
+          <div class="scenario-eval-box">
+            <strong>Deficiencias Pedagógicas Identificadas:</strong><br>
+            • Enfoque punitivo y desmotivador ("calificación deficiente").<br>
+            • Desconoce las competencias involucradas en la tarea.<br>
+            • Omite que el alumno venía con buen desempeño previo.<br>
+            • No proporciona ninguna estrategia didáctica al docente.
+          </div>
+
+          <div class="scenario-score-footer">
+            <span class="scenario-score-label">Evaluación Global según Rúbrica:</span>
+            <span class="scenario-score-number">1.8 / 5.0</span>
+          </div>
         </div>
-        <div class="form-group">
-          <label>Nombre del Curso:</label>
-          <input type="text" id="courseNameInput" class="form-control" placeholder="Ej. Matemáticas 9° - Geometría">
-        </div>
-        <div class="form-group">
-          <label>Docente Responsable:</label>
-          <input type="text" id="courseTeacherInput" class="form-control" placeholder="Ej. Prof. Cristóbal Martínez & Jainer Salas">
-        </div>
-        <div class="form-group">
-          <label>Descripción:</label>
-          <input type="text" id="courseDescInput" class="form-control" placeholder="Breve descripción del enfoque pedagógico...">
+
+        <!-- Escenario B -->
+        <div class="ab-scenario-card scenario-b">
+          <span class="scenario-badge-top">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+            Escenario B: SeguIA (Contextualizado)
+          </span>
+
+          <div class="scenario-prompt-box">
+            <strong>Entrada suministrada a SeguIA:</strong><br>
+            Historial cronológico + Brecha por competencias (Resolución 58 vs Álgebra 82) + Pendiente lineal (-3.2) + 3 descensos consecutivos + Observación cualitativa de aula.
+          </div>
+
+          <div class="scenario-output-quote">
+            <em>"El estudiante evidencia asimilación en conceptos formales (82 en álgebra), pero presenta bloqueo procedimental en enunciados con texto extenso. Se sugiere al docente valorar un taller remedial enfocado en descomposición heurística de problemas y acompañamiento guiado."</em>
+          </div>
+
+          <div class="scenario-eval-box">
+            <strong>Fortalezas Pedagógicas Clave:</strong><br>
+            • Lenguaje prudente, respetuoso y estrictamente formativo.<br>
+            • Identifica la competencia exacta que requiere refuerzo.<br>
+            • Valora las fortalezas conceptuales previas del estudiante.<br>
+            • Empodera la decisión pedagógica y didáctica del profesor.
+          </div>
+
+          <div class="scenario-score-footer">
+            <span class="scenario-score-label">Evaluación Global según Rúbrica:</span>
+            <span class="scenario-score-number">4.9 / 5.0</span>
+          </div>
         </div>
       </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" data-close="modalNewCourse">Cancelar</button>
-        <button class="btn btn-primary" id="btnSaveCourseSubmit">Crear Curso</button>
+
+      <!-- Tabla de la Rúbrica de Validación Pedagógica -->
+      <div class="rubric-table-wrapper">
+        <div class="rubric-header">
+          <div>
+            <h4>Rúbrica de Evaluación Pedagógica Docente</h4>
+            <p>Auditoría de las 6 dimensiones formativas estipuladas en el marco pedagógico</p>
+          </div>
+          <span class="badge badge-success">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Validación Docente Verificada
+          </span>
+        </div>
+
+        <div style="overflow-x: auto;">
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th>Criterio Pedagógico</th>
+                <th>Pregunta Guía que Evalúa</th>
+                <th style="text-align: center;">IA Tradicional</th>
+                <th style="text-align: center;">SeguIA Contextualizado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>1. Pertinencia</strong></td>
+                <td>¿Corresponde con los resultados registrados objetivamente?</td>
+                <td style="text-align: center;"><span class="score-pill score-pill-bad">2.0 / 5</span></td>
+                <td style="text-align: center;"><span class="score-pill score-pill-good">5.0 / 5</span></td>
+              </tr>
+              <tr>
+                <td><strong>2. Claridad</strong></td>
+                <td>¿Es comprensible, transparente y libre de ambigüedades?</td>
+                <td style="text-align: center;"><span class="score-pill score-pill-bad">2.5 / 5</span></td>
+                <td style="text-align: center;"><span class="score-pill score-pill-good">4.8 / 5</span></td>
+              </tr>
+              <tr>
+                <td><strong>3. Coherencia</strong></td>
+                <td>¿Existe correlación lógica entre evidencias, indicadores y propuesta?</td>
+                <td style="text-align: center;"><span class="score-pill score-pill-bad">1.5 / 5</span></td>
+                <td style="text-align: center;"><span class="score-pill score-pill-good">5.0 / 5</span></td>
+              </tr>
+              <tr>
+                <td><strong>4. Utilidad Pedagógica</strong></td>
+                <td>¿Proporciona una ruta accionable para la intervención de aula?</td>
+                <td style="text-align: center;"><span class="score-pill score-pill-bad">1.0 / 5</span></td>
+                <td style="text-align: center;"><span class="score-pill score-pill-good">5.0 / 5</span></td>
+              </tr>
+              <tr>
+                <td><strong>5. Sustento en Datos</strong></td>
+                <td>¿Evita afirmaciones sin respaldo en los indicadores objetivos del motor?</td>
+                <td style="text-align: center;"><span class="score-pill score-pill-bad">1.8 / 5</span></td>
+                <td style="text-align: center;"><span class="score-pill score-pill-good">4.9 / 5</span></td>
+              </tr>
+              <tr>
+                <td><strong>6. Lenguaje Apropiado</strong></td>
+                <td>¿Evita etiquetas punitivas, culpabilización o diagnósticos clínicos?</td>
+                <td style="text-align: center;"><span class="score-pill score-pill-bad">2.0 / 5</span></td>
+                <td style="text-align: center;"><span class="score-pill score-pill-good">4.8 / 5</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
-  </div>
+  </section>
 
-  <!-- Modal: Informe Imprimible Formal -->
-  <div class="modal-overlay" id="modalPrintReport">
-    <div class="modal" style="max-width: 850px;">
-      <div class="modal-header no-print">
-        <h3>Informe Pedagógico Oficial SeguIA</h3>
-        <div style="display: flex; gap: 0.5rem;">
-          <button class="btn btn-sm btn-primary" onclick="window.print()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
-            Imprimir / Guardar PDF
+  <!-- ==========================================================================
+       Caso de Estudio: Ciclo de Intervención de Juan Camilo
+       ========================================================================== -->
+  <section class="case-study-section" id="caso-estudio">
+    <div class="container">
+      <div class="case-study-card">
+        <div class="case-study-header">
+          <div>
+            <span class="case-study-badge">Caso de Estudio Real</span>
+            <h2 class="case-study-title">El Ciclo de Acompañamiento en Acción: Juan Camilo (EST-001)</h2>
+            <p style="color: var(--color-slate-600); font-size: 0.95rem; margin-top: 0.35rem;">
+              Demostración real de cómo SeguIA no se limita a predecir, sino que mide el resultado concreto de las decisiones tomadas por el educador.
+            </p>
+          </div>
+          <a href="app.html" class="btn btn-primary btn-sm">
+            <span>Ver Ficha en SeguIA</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+        </div>
+
+        <div class="case-study-steps-grid">
+          <!-- Paso 1 -->
+          <div class="case-step-box">
+            <div class="case-step-icon blue">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            </div>
+            <span class="case-step-label">1. Detección</span>
+            <h4 class="case-step-title">Situación Identificada</h4>
+            <p class="case-step-desc">
+              Descenso continuo en actividades de resolución de problemas con texto extenso; promedio descendente de 85 a 55 puntos.
+            </p>
+          </div>
+
+          <!-- Paso 2 -->
+          <div class="case-step-box">
+            <div class="case-step-icon amber">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>
+            </div>
+            <span class="case-step-label">2. Propuesta IA</span>
+            <h4 class="case-step-title">Recomendación Pedagógica</h4>
+            <p class="case-step-desc">
+              Sugerencia de realizar un refuerzo estructurado en descomposición por pasos y modelamiento previo con ejemplos resueltos.
+            </p>
+          </div>
+
+          <!-- Paso 3 -->
+          <div class="case-step-box">
+            <div class="case-step-icon purple">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m14.7 6.3 3 3a1 1 0 0 1 0 1.4l-7.3 7.3a2 2 0 0 1-1.4.6H5a1 1 0 0 1-1-1v-4a2 2 0 0 1 .6-1.4l7.3-7.3a1 1 0 0 1 1.4 0"/><path d="M16 2a2.83 2.83 0 0 1 4 4L17 9l-4-4Z"/></svg>
+            </div>
+            <span class="case-step-label">3. Decisión Docente</span>
+            <h4 class="case-step-title">Estrategia Implementada</h4>
+            <p class="case-step-desc">
+              El docente programa un taller remedial específico de 45 minutos y tutoría en parejas antes de la siguiente evaluación sumativa.
+            </p>
+          </div>
+
+          <!-- Paso 4 -->
+          <div class="case-step-box">
+            <div class="case-step-icon emerald">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+            </div>
+            <span class="case-step-label">4. Medición</span>
+            <h4 class="case-step-title">Impacto Cuantificado</h4>
+            <p class="case-step-desc">
+              Registro del nuevo desempeño en la actividad siguiente para medir la efectividad directa de la estrategia educativa.
+            </p>
+          </div>
+        </div>
+
+        <!-- Tira de Impacto Cuantificado -->
+        <div class="impact-comparison-strip">
+          <div class="impact-metric">
+            <span class="impact-label">Calificación Antes de la Intervención</span>
+            <span class="impact-val before">55 / 100</span>
+          </div>
+
+          <div class="impact-arrow">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" x2="19" y1="12" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </div>
+
+          <div class="impact-metric">
+            <span class="impact-label">Calificación Tras el Taller Remedial</span>
+            <span class="impact-val after">68 / 100</span>
+          </div>
+
+          <div class="impact-arrow">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+
+          <div class="impact-metric">
+            <span class="impact-label">Efecto Pedagógico Medido</span>
+            <span class="impact-val gain">+13 pts</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       Decálogo Pedagógico y Límites del Sistema ("Lo que SeguIA NO es")
+       ========================================================================== -->
+  <section class="ethics-section" id="decalogo">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+          Límites del Sistema
+        </span>
+        <h2 class="section-title">Decálogo Ético: Lo que SeguIA NO es</h2>
+        <p class="section-description">
+          Principios de Responsabilidad: Reconocer los límites fortalece la credibilidad ética del proyecto y evita el uso indebido de la tecnología en contextos educativos.
+        </p>
+      </div>
+
+      <div class="ethics-grid">
+        <!-- 1 -->
+        <div class="ethics-card">
+          <div class="ethics-header">
+            <div class="ethics-icon-box">
+              <span class="ethics-num">01</span>
+            </div>
+            <h3 class="ethics-title">No sustituye la valoración profesional</h3>
+          </div>
+          <p class="ethics-desc">
+            El criterio humano, la empatía y la apreciación del contexto sociocultural del estudiante pertenecen en forma indelegable al educador.
+          </p>
+        </div>
+
+        <!-- 2 -->
+        <div class="ethics-card">
+          <div class="ethics-header">
+            <div class="ethics-icon-box">
+              <span class="ethics-num">02</span>
+            </div>
+            <h3 class="ethics-title">No hace diagnósticos clínicos ni psicológicos</h3>
+          </div>
+          <p class="ethics-desc">
+            El sistema jamás emite etiquetas sobre supuestos trastornos de aprendizaje, déficit cognitivo ni atributos innatos del alumno.
+          </p>
+        </div>
+
+        <!-- 3 -->
+        <div class="ethics-card">
+          <div class="ethics-header">
+            <div class="ethics-icon-box">
+              <span class="ethics-num">03</span>
+            </div>
+            <h3 class="ethics-title">No determina sentencias fatalistas</h3>
+          </div>
+          <p class="ethics-desc">
+            No vaticina si un estudiante "va a reprobar irremediablemente"; proyecta trayectorias para intervenir a tiempo y cambiar el rumbo formativo.
+          </p>
+        </div>
+
+        <!-- 4 -->
+        <div class="ethics-card">
+          <div class="ethics-header">
+            <div class="ethics-icon-box">
+              <span class="ethics-num">04</span>
+            </div>
+            <h3 class="ethics-title">No asume correlación como causalidad</h3>
+          </div>
+          <p class="ethics-desc">
+            Una disminución en notas no se atribuye de forma arbitraria a negligencia o falta de capacidad; se reportan datos objetivos para el análisis docente.
+          </p>
+        </div>
+
+        <!-- 5 -->
+        <div class="ethics-card">
+          <div class="ethics-header">
+            <div class="ethics-icon-box">
+              <span class="ethics-num">05</span>
+            </div>
+            <h3 class="ethics-title">Depende de la calidad de los datos registrados</h3>
+          </div>
+          <p class="ethics-desc">
+            La pertinencia de las retroalimentaciones depende de la precisión de las evidencias y de la riqueza descriptiva de las observaciones de aula.
+          </p>
+        </div>
+
+        <!-- 6 -->
+        <div class="ethics-card">
+          <div class="ethics-header">
+            <div class="ethics-icon-box">
+              <span class="ethics-num">06</span>
+            </div>
+            <h3 class="ethics-title">Supervisión humana obligatoria en todo momento</h3>
+          </div>
+          <p class="ethics-desc">
+            Toda sugerencia formulada por el sistema debe ser revisada por el profesor antes de ser aplicada o compartida en el informe oficial.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       Arquitectura Técnica & Cloud Stack
+       ========================================================================== -->
+  <section class="tech-section" id="arquitectura">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+          Tecnología & Rendimiento
+        </span>
+        <h2 class="section-title">Infraestructura de Nivel Empresarial</h2>
+        <p class="section-description">
+          Construido sobre estándares modernos en la nube, optimizado para respuestas instantáneas y alta seguridad de datos educativos.
+        </p>
+      </div>
+
+      <div class="tech-grid">
+        <!-- Tech 1 -->
+        <div class="tech-card">
+          <div class="tech-icon-wrapper">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <h3 class="tech-name">Supabase PostgreSQL</h3>
+          <span class="tech-badge">Base de Datos en la Nube</span>
+          <p class="tech-desc">
+            Almacenamiento relacional robusto con tablas estructuradas para cursos, competencias, estudiantes, actividades y rúbricas.
+          </p>
+        </div>
+
+        <!-- Tech 2 -->
+        <div class="tech-card">
+          <div class="tech-icon-wrapper">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 22 22 22 12 2"/></svg>
+          </div>
+          <h3 class="tech-name">Infraestructura en la Nube</h3>
+          <span class="tech-badge">Alta Disponibilidad</span>
+          <p class="tech-desc">
+            Arquitectura de servicios de alto rendimiento con tiempos de respuesta inmediatos y acceso seguro y continuo para el docente.
+          </p>
+        </div>
+
+        <!-- Tech 3 -->
+        <div class="tech-card">
+          <div class="tech-icon-wrapper">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>
+          </div>
+          <h3 class="tech-name">Google Gemini 3.8</h3>
+          <span class="tech-badge">IA Pedagógica</span>
+          <p class="tech-desc">
+            Integración de última generación con Gemini 3.8 Flash para formulación de recomendaciones contextualizadas y empáticas.
+          </p>
+        </div>
+
+        <!-- Tech 4 -->
+        <div class="tech-card">
+          <div class="tech-icon-wrapper">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+          </div>
+          <h3 class="tech-name">Gráficos Vectoriales SVG</h3>
+          <span class="tech-badge">Visualización Nativa</span>
+          <p class="tech-desc">
+            Representación gráfica sin librerías pesadas, garantizando nitidez perfecta, bajo consumo de memoria y soporte directo para impresión en PDF.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       Preguntas Frecuentes (FAQ)
+       ========================================================================== -->
+  <section class="faq-section" id="faq">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          Claridad Institucional
+        </span>
+        <h2 class="section-title">Preguntas Frecuentes</h2>
+        <p class="section-description">
+          Respuestas transparentes sobre la metodología, privacidad y funcionamiento práctico de SeguIA.
+        </p>
+      </div>
+
+      <div class="faq-list">
+        <!-- FAQ 1 -->
+        <div class="faq-item active">
+          <button class="faq-question">
+            <span>¿Por qué se afirma que "La IA no hace los cálculos"?</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
-          <button class="modal-close" data-close="modalPrintReport" aria-label="Cerrar">&times;</button>
+          <div class="faq-answer">
+            Los modelos de lenguaje generativos (LLMs) tienen propensión comprobada a alucinar resultados en operaciones aritméticas directas. En SeguIA, toda la analítica cuantitativa (promedios, pendientes de regresión, variaciones y conteo de caídas) es procesada por un motor determinístico en Node.js. La IA únicamente recibe indicadores ya computados para redactar la síntesis pedagógica.
+          </div>
+        </div>
+
+        <!-- FAQ 2 -->
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>¿Cómo se resguarda la privacidad de los estudiantes?</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            El sistema incorpora un conmutador de privacidad activo por defecto. Antes de estructurar el prompt para el modelo de inteligencia artificial, los nombres de pila y apellidos se reemplazan por códigos alfanuméricos anonimizados (como EST-001), resguardando los datos sensibles del alumnado.
+          </div>
+        </div>
+
+        <!-- FAQ 3 -->
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>¿Qué ocurre si un estudiante tiene menos de 3 actividades registradas?</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            Bajo el principio de Honestidad Metodológica, el sistema no calcula pendientes ni emite recomendaciones apresuradas con datos insuficientes. En su lugar, informa al docente que se requiere registrar al menos 3 actividades evaluadas para determinar una tendencia estadísticamente significativa.
+          </div>
+        </div>
+
+        <!-- FAQ 4 -->
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>¿El sistema genera informes formales imprimibles para los acudientes?</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            Sí. Desde la ficha de cada estudiante, el docente puede generar e imprimir con un solo clic (Ctrl + P) un reporte formativo completo en formato PDF, optimizado visualmente para reuniones de seguimiento académico con familias e instituciones.
+          </div>
+        </div>
+
+        <!-- FAQ 5 -->
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>¿Cómo puedo acceder a la plataforma web de SeguIA?</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            La aplicación se encuentra totalmente operativa y disponible en la nube. Puedes ingresar directamente mediante el enlace oficial: <a href="app.html">https://segunia-umber.vercel.app/</a>, donde podrás probar el panel de control, la ficha de Juan Camilo y el ciclo de intervención docente.
+          </div>
         </div>
       </div>
-      <div class="modal-body" id="printableReportContainer"></div>
     </div>
-  </div>
+  </section>
 
-  <script src="js/icons.js"></script>
-  <script src="js/charts.js"></script>
-  <script src="js/api.js"></script>
-  <script src="js/app.js"></script>
+  <!-- ==========================================================================
+       Llamado a la Acción (CTA Banner Final)
+       ========================================================================== -->
+  <section class="cta-banner-section">
+    <div class="container">
+      <div class="cta-banner-content">
+        <span class="cta-pill">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+          Plataforma Activa y Disponible en Línea
+        </span>
+        <h2 class="cta-headline">Experimenta SeguIA en Tiempo Real</h2>
+        <p class="cta-description">
+          Accede a la plataforma web del proyecto y descubre cómo la combinación de rigor estadístico y lenguaje pedagógico ético empodera la práctica docente cotidiana.
+        </p>
+
+        <div class="cta-button-group">
+          <a href="app.html" class="btn btn-primary btn-lg" style="background: #ffffff; color: var(--color-primary-dark); font-weight: 800; box-shadow: 0 10px 25px rgba(0,0,0,0.3);">
+            <span>Ingresar a SeguIA</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+          <a href="#calculadora" class="btn btn-outline-white btn-lg">
+            <span>Probar Simulador</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/></svg>
+          </a>
+        </div>
+
+        <div class="cta-meta-note">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+          <span>URL Directa: https://segunia-umber.vercel.app/</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       Pie de Página (Footer)
+       ========================================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h4>SeguIA (SegunIA)</h4>
+          <p>
+            Sistema Inteligente de Seguimiento Académico y Retroalimentación Docente Basado en Evidencias. Desarrollado con base en el marco pedagógico institucional y la ética algorítmica educativa.
+          </p>
+          <div class="footer-credits">
+            <strong>Autores del Proyecto:</strong><br>
+            Cristóbal Martínez & Jainer Salas<br>
+            <em>"La IA propone, los datos sustentan y el docente decide."</em>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h5>Estructura</h5>
+          <div class="footer-links">
+            <a href="#flujo">Flujo Pedagógico</a>
+            <a href="#pilares">Pilares del Sistema</a>
+            <a href="#calculadora">Motor Estadístico</a>
+            <a href="#laboratorio-ab">Laboratorio A/B</a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h5>Marco y Ética</h5>
+          <div class="footer-links">
+            <a href="#caso-estudio">Caso Juan Camilo</a>
+            <a href="#decalogo">Decálogo Ético</a>
+            <a href="#arquitectura">Infraestructura Nube</a>
+            <a href="#faq">Preguntas Frecuentes</a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h5>Aplicación Web</h5>
+          <div class="footer-links">
+            <a href="app.html" style="color: #93c5fd; font-weight: 700; display: inline-flex; align-items: center; gap: 4px;">
+              <span>Plataforma en Línea</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+            <span style="font-size: 0.8rem; color: var(--color-slate-500);">Acceso Institucional</span>
+            <span style="font-size: 0.8rem; color: var(--color-slate-500);">Base de Datos en la Nube</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          &copy; 2026 SeguIA. Proyecto de Investigación y Desarrollo en IA Pedagógica.
+        </div>
+        <div style="display: flex; gap: 1.5rem;">
+          <span>Privacidad por diseño</span>
+          <span>Enfoque Pedagógico Formativo</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/landing.js"></script>
 </body>
 </html>

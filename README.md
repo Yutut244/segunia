@@ -92,10 +92,15 @@ proyecto-ia/
 ├── api/
 │   └── index.js          # Vercel Serverless Function (manejador de API REST)
 └── public/
-    ├── index.html        # Panel de control e interfaz pedagógica
-    ├── css/styles.css    # Diseño pedagógico y estilos de impresión
+    ├── index.html        # Página web de presentación y ciclo formativo (Landing institucional)
+    ├── app.html          # Panel de control e interfaz pedagógica de SeguIA
+    ├── css/
+    │   ├── landing.css   # Estilos de la página de presentación
+    │   └── styles.css    # Diseño pedagógico y estilos de impresión del panel
     └── js/
+        ├── landing.js    # Lógica interactiva del ciclo y simulador de la presentación
         ├── charts.js     # Gráficos vectoriales SVG nativos
         ├── api.js        # Cliente HTTP REST para el frontend
-        └── app.js        # Lógica de la interfaz de usuario
+        ├── icons.js      # Iconografía SVG vectorial
+        └── app.js        # Lógica de la interfaz de usuario del panel docente
 ```
