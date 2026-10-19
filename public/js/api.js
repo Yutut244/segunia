@@ -20,6 +20,14 @@ const API = {
     return await res.json();
   },
 
+  // Autenticación
+  login(credentials) {
+    return this.request('/api/auth/login', {
+      method: 'POST',
+      body: JSON.stringify(credentials)
+    });
+  },
+
   // Cursos
   getCourses() {
     return this.request('/api/courses');

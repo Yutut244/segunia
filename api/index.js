@@ -56,6 +56,32 @@ async function handleApiRequest(req, res) {
 
   try {
     // ==========================================
+    // 0. AUTENTICACIÓN DOCENTE
+    // ==========================================
+    if (pathname === '/api/auth/login' && method === 'POST') {
+      const body = await parseBody(req);
+      const username = (body.username || body.email || '').trim().toLowerCase();
+      const password = (body.password || '').trim();
+
+      if (
+        (username === 'docente@seguia.edu' && (password === 'seguia2026' || password === 'demo' || password === '123456')) ||
+        (username === 'admin' && (password === 'admin123' || password === 'seguia2026')) ||
+        (username && password && password.length >= 4)
+      ) {
+        const user = {
+          id: 1,
+          name: username === 'admin' ? 'Coordinación Académica' : 'Prof. Cristóbal Martínez & Jainer Salas',
+          email: username.includes('@') ? username : `${username}@seguia.edu`,
+          role: username === 'admin' ? 'Coordinador' : 'Docente Titular',
+          token: 'seguia_tk_' + Date.now()
+        };
+        return sendJSON(res, 200, { success: true, user });
+      }
+
+      return sendJSON(res, 401, { error: 'Credenciales incorrectas. Verifique su usuario y contraseña.' });
+    }
+
+    // ==========================================
     // 1. CURSOS
     // ==========================================
     if (pathname === '/api/courses' && method === 'GET') {

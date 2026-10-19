@@ -102,7 +102,7 @@ function analyzeStudentPerformance(gradesHistory, competencies = [], thresholds 
       insufficientData: true,
       message: 'No existen actividades registradas para este estudiante.',
       alertLevel: 'regular',
-      alertBadge: '🟢 Sin registros',
+      alertBadge: 'Sin registros',
       average: 0,
       trend: { slope: 0, direction: 'indeterminada', label: 'Sin datos suficientes' },
       competenciesSummary: [],
@@ -121,7 +121,7 @@ function analyzeStudentPerformance(gradesHistory, competencies = [], thresholds 
       insufficientData: true,
       message: `El estudiante cuenta con solo ${totalActivities} actividad(es) registrada(s). No existen suficientes actividades registradas para identificar una tendencia confiable.`,
       alertLevel: 'regular',
-      alertBadge: '🟢 Datos preliminares',
+      alertBadge: 'Datos preliminares',
       average,
       totalActivities,
       consecutiveDrops: 0,
@@ -167,9 +167,9 @@ function analyzeStudentPerformance(gradesHistory, competencies = [], thresholds 
   // Clasificación de Alertas Responsables (3 niveles según Section 8)
   const explicabilityReasons = [];
   let alertLevel = 'regular';
-  let alertBadge = '🟢 Seguimiento regular';
+  let alertBadge = 'Seguimiento regular';
 
-  // Condiciones de Atención Prioritaria (🔴)
+  // Condiciones de Atención Prioritaria
   const isSevereSlope = regression.slope <= config.prioritySlopeThreshold;
   const isMultipleLowScores = lowScoresCount >= 2;
   const isPersistentDrops = consecutiveDrops >= config.consecutiveDropsThreshold;
@@ -183,7 +183,7 @@ function analyzeStudentPerformance(gradesHistory, competencies = [], thresholds 
 
   if (priorityFactorsCount >= 2 || (isSevereSlope && isMultipleLowScores)) {
     alertLevel = 'priority';
-    alertBadge = '🔴 Atención prioritaria';
+    alertBadge = 'Atención prioritaria';
     if (isSevereSlope) {
       explicabilityReasons.push(`Pendiente descendente prolongada de desempeño (tasa: ${regression.slope} pts/actividad).`);
     }
@@ -199,7 +199,7 @@ function analyzeStudentPerformance(gradesHistory, competencies = [], thresholds 
       });
     }
   }
-  // Condiciones de Revisión Recomendada (🟡)
+  // Condiciones de Revisión Recomendada
   else if (
     consecutiveDrops >= config.consecutiveDropsThreshold ||
     hasCriticalComp ||
@@ -207,7 +207,7 @@ function analyzeStudentPerformance(gradesHistory, competencies = [], thresholds 
     (lastScore < config.passingGrade)
   ) {
     alertLevel = 'recommended';
-    alertBadge = '🟡 Revisión recomendada';
+    alertBadge = 'Revisión recomendada';
     if (consecutiveDrops >= config.consecutiveDropsThreshold) {
       explicabilityReasons.push(`Disminución sostenida en ${consecutiveDrops} actividades consecutivas.`);
     }
@@ -223,10 +223,10 @@ function analyzeStudentPerformance(gradesHistory, competencies = [], thresholds 
       explicabilityReasons.push(`Última actividad calificada (${lastScore} pts) por debajo del umbral mínimo institucional (${config.passingGrade} pts).`);
     }
   }
-  // Seguimiento Regular (🟢)
+  // Seguimiento Regular
   else {
     alertLevel = 'regular';
-    alertBadge = '🟢 Seguimiento regular';
+    alertBadge = 'Seguimiento regular';
     explicabilityReasons.push(`Desempeño general estable o en ascenso (${average} pts promedio).`);
     if (regression.slope >= 0.5) {
       explicabilityReasons.push(`Tendencia ascendente favorable (+${regression.slope} pts/actividad).`);

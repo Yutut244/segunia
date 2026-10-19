@@ -1,6 +1,9 @@
 // app.js - Lógica Principal de la Aplicación SeguIA
+// Diseño Moderno, Responsivo, Autenticación y Cero Emojis
+
 document.addEventListener('DOMContentLoaded', async () => {
   const state = {
+    user: null,
     courses: [],
     currentCourseId: null,
     currentCourse: null,
@@ -13,26 +16,146 @@ document.addEventListener('DOMContentLoaded', async () => {
     lastGeneratedFeedbackId: null
   };
 
+  const TAB_TITLES = {
+    'tab-dashboard': 'Panel del Curso',
+    'tab-student': 'Ficha Individual & IA',
+    'tab-cycle': 'Ciclo de Intervención',
+    'tab-ab': 'Laboratorio A/B & Rúbricas',
+    'tab-settings': 'Configuración del Sistema',
+    'tab-ethics': 'Principios Éticos'
+  };
+
   // ==========================================
-  // INICIALIZACIÓN
+  // INICIALIZACIÓN Y CONTROL DE AUTENTICACIÓN
   // ==========================================
   async function init() {
-    setupEventListeners();
-    await loadSettings();
-    await loadCourses();
+    setupAuthListeners();
+    checkAuthSession();
+  }
+
+  function checkAuthSession() {
+    const sessionStr = localStorage.getItem('seguia_session');
+    if (sessionStr) {
+      try {
+        state.user = JSON.parse(sessionStr);
+        showAppView();
+        return;
+      } catch (e) {
+        localStorage.removeItem('seguia_session');
+      }
+    }
+    showLoginView();
+  }
+
+  function showLoginView() {
+    document.getElementById('loginView').style.display = 'flex';
+    document.getElementById('appView').style.display = 'none';
+  }
+
+  function showAppView() {
+    document.getElementById('loginView').style.display = 'none';
+    document.getElementById('appView').style.display = 'block';
+
+    if (state.user) {
+      document.getElementById('userName').textContent = state.user.name || 'Docente Titular';
+      document.getElementById('userRole').textContent = state.user.role || 'Docente';
+      const initials = (state.user.name || 'Docente')
+        .split(' ')
+        .filter(n => n.length > 0 && !n.includes('.'))
+        .map(n => n[0])
+        .slice(0, 2)
+        .join('')
+        .toUpperCase() || 'DC';
+      document.getElementById('userAvatar').textContent = initials;
+    }
+
+    setupAppEventListeners();
+    loadSettings();
+    loadCourses();
   }
 
   // ==========================================
-  // CONFIGURACIÓN DE EVENT LISTENERS
+  // EVENTOS DE AUTENTICACIÓN
   // ==========================================
-  function setupEventListeners() {
-    // Cambio de pestañas
-    document.querySelectorAll('.nav-tab').forEach(tab => {
-      tab.addEventListener('click', (e) => {
-        const targetTabId = tab.getAttribute('data-tab');
+  function setupAuthListeners() {
+    const loginForm = document.getElementById('loginForm');
+    const loginErrorAlert = document.getElementById('loginErrorAlert');
+    const loginErrorText = document.getElementById('loginErrorText');
+
+    loginForm?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const username = document.getElementById('loginUsername').value.trim();
+      const password = document.getElementById('loginPassword').value.trim();
+      const btn = document.getElementById('btnLoginSubmit');
+
+      loginErrorAlert.style.display = 'none';
+      btn.disabled = true;
+      btn.textContent = 'Verificando...';
+
+      try {
+        const res = await API.login({ username, password });
+        if (res.success && res.user) {
+          state.user = res.user;
+          localStorage.setItem('seguia_session', JSON.stringify(res.user));
+          showAppView();
+        } else {
+          throw new Error(res.error || 'Credenciales inválidas.');
+        }
+      } catch (err) {
+        loginErrorText.textContent = err.message || 'Error al iniciar sesión.';
+        loginErrorAlert.style.display = 'flex';
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" x2="3" y1="12" y2="12"/></svg> Iniciar Sesión`;
+      }
+    });
+
+    // Botón Acceso Rápido Demo
+    document.getElementById('btnQuickDemo')?.addEventListener('click', () => {
+      document.getElementById('loginUsername').value = 'docente@seguia.edu';
+      document.getElementById('loginPassword').value = 'seguia2026';
+      loginForm.dispatchEvent(new Event('submit'));
+    });
+
+    // Botón Cerrar Sesión
+    document.getElementById('btnLogout')?.addEventListener('click', () => {
+      if (confirm('¿Deseas cerrar tu sesión docente en SeguIA?')) {
+        localStorage.removeItem('seguia_session');
+        state.user = null;
+        showLoginView();
+      }
+    });
+  }
+
+  // ==========================================
+  // CONFIGURACIÓN DE EVENT LISTENERS DE LA APP
+  // ==========================================
+  let appListenersInitialized = false;
+  function setupAppEventListeners() {
+    if (appListenersInitialized) return;
+    appListenersInitialized = true;
+
+    // Navegación Sidebar (sin scrollbars horizontales)
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const targetTabId = item.getAttribute('data-tab');
         switchTab(targetTabId);
+        closeMobileSidebar();
       });
     });
+
+    // Control del Menú Móvil (Hamburger)
+    const btnHamburger = document.getElementById('btnHamburger');
+    const btnSidebarClose = document.getElementById('btnSidebarClose');
+    const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+
+    btnHamburger?.addEventListener('click', () => {
+      document.getElementById('appSidebar').classList.add('sidebar-open');
+      sidebarBackdrop.classList.add('active');
+    });
+
+    btnSidebarClose?.addEventListener('click', closeMobileSidebar);
+    sidebarBackdrop?.addEventListener('click', closeMobileSidebar);
 
     // Selector de Curso Principal
     const courseSelect = document.getElementById('courseSelect');
@@ -42,32 +165,32 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     // Filtros de búsqueda en el dashboard
-    document.getElementById('studentSearchInput').addEventListener('input', renderStudentsTable);
-    document.getElementById('filterAlertSelect').addEventListener('change', renderStudentsTable);
+    document.getElementById('studentSearchInput')?.addEventListener('input', renderStudentsTable);
+    document.getElementById('filterAlertSelect')?.addEventListener('change', renderStudentsTable);
 
-    // Selector de Estudiante en la pestaña Ficha Individual
-    document.getElementById('studentSelectInTab').addEventListener('change', async (e) => {
+    // Selector de Estudiante en Ficha Individual
+    document.getElementById('studentSelectInTab')?.addEventListener('change', async (e) => {
       state.currentStudentId = Number(e.target.value);
       await loadStudentDetails(state.currentStudentId);
     });
 
-    // Botones de Modales
+    // Modales y Acciones
     setupModalButtons();
 
-    // Botón Generar IA en Ficha Individual
-    document.getElementById('btnGenerateAI').addEventListener('click', handleGenerateAIFeedback);
+    // Botón Generar IA
+    document.getElementById('btnGenerateAI')?.addEventListener('click', handleGenerateAIFeedback);
 
     // Botón Comparativa A/B
-    document.getElementById('btnRunABTest').addEventListener('click', handleRunABTest);
+    document.getElementById('btnRunABTest')?.addEventListener('click', handleRunABTest);
 
     // Botón Guardar Rúbrica
-    document.getElementById('btnSubmitRubric').addEventListener('click', handleSubmitRubric);
+    document.getElementById('btnSubmitRubric')?.addEventListener('click', handleSubmitRubric);
 
     // Botón Guardar Configuración
-    document.getElementById('btnSaveSettings').addEventListener('click', handleSaveSettings);
+    document.getElementById('btnSaveSettings')?.addEventListener('click', handleSaveSettings);
 
     // Botón Imprimir Informe
-    document.getElementById('btnPrintReport').addEventListener('click', handleOpenPrintReport);
+    document.getElementById('btnPrintReport')?.addEventListener('click', handleOpenPrintReport);
 
     // Redibujar gráficos si cambia el tamaño de ventana
     window.addEventListener('resize', () => {
@@ -77,15 +200,26 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
+  function closeMobileSidebar() {
+    document.getElementById('appSidebar')?.classList.remove('sidebar-open');
+    document.getElementById('sidebarBackdrop')?.classList.remove('active');
+  }
+
   function switchTab(tabId) {
-    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
 
-    const activeBtn = document.querySelector(`.nav-tab[data-tab="${tabId}"]`);
+    const activeBtn = document.querySelector(`.nav-item[data-tab="${tabId}"]`);
     const activePane = document.getElementById(tabId);
 
     if (activeBtn) activeBtn.classList.add('active');
     if (activePane) activePane.classList.add('active');
+
+    // Actualizar título en la barra superior
+    const titleElement = document.getElementById('currentTabTitle');
+    if (titleElement && TAB_TITLES[tabId]) {
+      titleElement.textContent = TAB_TITLES[tabId];
+    }
 
     // Acciones al cambiar de pestaña
     if (tabId === 'tab-student' && state.currentStudentData) {
@@ -103,14 +237,20 @@ document.addEventListener('DOMContentLoaded', async () => {
       const res = await API.getSettings();
       state.settings = res.settings || {};
       
-      // Llenar campos de configuración en UI
-      document.getElementById('cfg_consecutive_drops').value = state.settings.consecutive_drops_threshold || 3;
-      document.getElementById('cfg_drop_delta').value = state.settings.drop_delta_threshold || 10;
-      document.getElementById('cfg_priority_slope').value = state.settings.priority_alert_slope || -1.5;
-      document.getElementById('cfg_competency_gap').value = state.settings.competency_gap_threshold || 12;
-      document.getElementById('cfg_gemini_api_key').value = state.settings.gemini_api_key || '';
-      document.getElementById('cfg_gemini_model').value = state.settings.gemini_model || 'gemini-2.5-flash';
-      document.getElementById('cfg_anonymize').checked = state.settings.anonymize_ai !== false;
+      const setVal = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.value = val;
+      };
+
+      setVal('cfg_consecutive_drops', state.settings.consecutive_drops_threshold || 3);
+      setVal('cfg_drop_delta', state.settings.drop_delta_threshold || 10);
+      setVal('cfg_priority_slope', state.settings.priority_alert_slope || -1.5);
+      setVal('cfg_competency_gap', state.settings.competency_gap_threshold || 12);
+      setVal('cfg_gemini_api_key', state.settings.gemini_api_key || '');
+      setVal('cfg_gemini_model', state.settings.gemini_model || 'gemini-3.8-flash');
+
+      const anonCheck = document.getElementById('cfg_anonymize');
+      if (anonCheck) anonCheck.checked = state.settings.anonymize_ai !== false;
 
       updatePrivacyBadge();
     } catch (err) {
@@ -120,14 +260,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   function updatePrivacyBadge() {
     const badge = document.getElementById('privacyIndicator');
+    if (!badge) return;
     if (state.settings.anonymize_ai !== false) {
-      badge.textContent = '🔒 Modo Anonimizado Activo';
-      badge.style.display = 'inline-flex';
+      badge.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> <span>Modo Anonimizado</span>`;
+      badge.style.background = 'var(--accent-subtle)';
+      badge.style.borderColor = '#99f6e4';
+      badge.style.color = '#0f766e';
     } else {
-      badge.textContent = '🔓 Nombres Visibles en IA';
-      badge.style.background = 'rgba(239, 68, 68, 0.2)';
-      badge.style.borderColor = '#ef4444';
-      badge.style.color = '#fca5a5';
+      badge.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg> <span>Nombres Visibles</span>`;
+      badge.style.background = '#fef2f2';
+      badge.style.borderColor = '#fca5a5';
+      badge.style.color = '#991b1b';
     }
   }
 
@@ -136,6 +279,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const res = await API.getCourses();
       state.courses = res.courses || [];
       const select = document.getElementById('courseSelect');
+      if (!select) return;
       select.innerHTML = '';
 
       state.courses.forEach(c => {
@@ -157,27 +301,26 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   async function loadCourseData(courseId) {
     try {
-      // 1. Datos del curso, competencias y actividades
       const courseRes = await API.getCourse(courseId);
       state.currentCourse = courseRes.course;
       state.competencies = courseRes.competencies || [];
       state.activities = courseRes.activities || [];
 
-      // 2. Estudiantes y analítica calculada
+      // Subtítulo en barra superior
+      const subEl = document.getElementById('currentCourseSubtitle');
+      if (subEl && state.currentCourse) {
+        subEl.textContent = `${state.currentCourse.code} — ${state.currentCourse.teacher_name}`;
+      }
+
+      // Estudiantes y analítica calculada
       const studentsRes = await API.getCourseStudents(courseId);
       state.students = studentsRes.students || [];
 
-      // Renderizar métricas del curso
       renderCourseOverview(studentsRes.courseOverview);
-
-      // Renderizar tabla del panel
       renderStudentsTable();
-
-      // Actualizar selectores en modales y pestañas
       populateStudentSelects();
       populateActivityAndCompetencySelects();
 
-      // Cargar primer estudiante por defecto
       if (state.students.length > 0) {
         state.currentStudentId = state.students[0].id;
         await loadStudentDetails(state.currentStudentId);
@@ -188,23 +331,24 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // ==========================================
-  // RENDERIZADO: PANEL DEL CURSO
+  // RENDERIZADO: PANEL DEL CURSO (SIN EMOJIS)
   // ==========================================
   function renderCourseOverview(overview) {
     if (!overview) return;
     document.getElementById('courseAvgDisplay').textContent = `${overview.courseAverage}/100`;
-    document.getElementById('courseDescDisplay').textContent = `${overview.evaluatedStudents} de ${overview.totalStudents} estudiantes evaluados`;
-    document.getElementById('priorityCountDisplay').textContent = overview.alertCounts.priority || 0;
-    document.getElementById('recommendedCountDisplay').textContent = overview.alertCounts.recommended || 0;
-    document.getElementById('regularCountDisplay').textContent = overview.alertCounts.regular || 0;
+    document.getElementById('courseDescDisplay').textContent = `${overview.evaluatedStudents} de ${overview.totalStudents} evaluados`;
+    document.getElementById('priorityCountDisplay').textContent = overview.alertCounts?.priority || 0;
+    document.getElementById('recommendedCountDisplay').textContent = overview.alertCounts?.recommended || 0;
+    document.getElementById('regularCountDisplay').textContent = overview.alertCounts?.regular || 0;
   }
 
   function renderStudentsTable() {
     const tbody = document.getElementById('studentsTableBody');
+    if (!tbody) return;
     tbody.innerHTML = '';
 
-    const searchTerm = document.getElementById('studentSearchInput').value.toLowerCase().trim();
-    const alertFilter = document.getElementById('filterAlertSelect').value;
+    const searchTerm = (document.getElementById('studentSearchInput')?.value || '').toLowerCase().trim();
+    const alertFilter = document.getElementById('filterAlertSelect')?.value || 'all';
 
     const filtered = state.students.filter(s => {
       const matchSearch = s.full_name.toLowerCase().includes(searchTerm) || s.student_code.toLowerCase().includes(searchTerm);
@@ -220,43 +364,42 @@ document.addEventListener('DOMContentLoaded', async () => {
     filtered.forEach(s => {
       const tr = document.createElement('tr');
 
-      // Badge de alerta
+      // Badge de alerta profesional con indicador SVG de estado
       let alertBadgeHTML = '';
       if (s.alertLevel === 'priority') {
-        alertBadgeHTML = `<span class="badge badge-priority">🔴 Atención prioritaria</span>`;
+        alertBadgeHTML = `<span class="badge badge-priority"><span class="status-indicator status-priority"></span> Atención prioritaria</span>`;
       } else if (s.alertLevel === 'recommended') {
-        alertBadgeHTML = `<span class="badge badge-recommended">🟡 Revisión recomendada</span>`;
+        alertBadgeHTML = `<span class="badge badge-recommended"><span class="status-indicator status-recommended"></span> Revisión recomendada</span>`;
       } else {
-        alertBadgeHTML = `<span class="badge badge-regular">🟢 Seguimiento regular</span>`;
+        alertBadgeHTML = `<span class="badge badge-regular"><span class="status-indicator status-regular"></span> Seguimiento regular</span>`;
       }
 
-      // Tendencia
+      // Tendencia con icono SVG
       let trendHTML = '<span>--</span>';
       if (s.trend) {
         if (s.trend.slope > 0.5) {
-          trendHTML = `<span style="color:#10b981; font-weight:600;">↗ Ascenso (+${s.trend.slope})</span>`;
+          trendHTML = `<span style="color:#10b981; font-weight:700; display:inline-flex; align-items:center; gap:4px;">${Icons.render('trendUp')} +${s.trend.slope}</span>`;
         } else if (s.trend.slope < -0.8) {
-          trendHTML = `<span style="color:#ef4444; font-weight:600;">↘ Descenso (${s.trend.slope})</span>`;
+          trendHTML = `<span style="color:#ef4444; font-weight:700; display:inline-flex; align-items:center; gap:4px;">${Icons.render('trendDown')} ${s.trend.slope}</span>`;
         } else {
-          trendHTML = `<span style="color:#64748b;">→ Estable (${s.trend.slope})</span>`;
+          trendHTML = `<span style="color:#64748b; font-weight:600; display:inline-flex; align-items:center; gap:4px;">${Icons.render('trendFlat')} ${s.trend.slope}</span>`;
         }
       }
 
       tr.innerHTML = `
-        <td><strong style="color:var(--primary);">${s.student_code}</strong></td>
+        <td><strong style="color:var(--primary); font-size:0.85rem;">${s.student_code}</strong></td>
         <td><strong>${s.full_name}</strong></td>
         <td>${s.gradesCount} act.</td>
         <td><strong style="font-size:1.05rem;">${s.average > 0 ? `${s.average}/100` : '--'}</strong></td>
         <td>${trendHTML}</td>
         <td>${alertBadgeHTML}</td>
-        <td>${s.interventionsCount > 0 ? `<span class="badge" style="background:#e0f2fe; color:#0369a1;">${s.interventionsCount} reg.</span>` : '<span style="color:#94a3b8;">0</span>'}</td>
-        <td style="text-align: right;">
+        <td>${s.interventionsCount > 0 ? `<span class="badge" style="background:#eff6ff; color:#1e40af;">${s.interventionsCount} reg.</span>` : '<span style="color:#94a3b8;">0</span>'}</td>
+        <td style="text-align: right; white-space: nowrap;">
           <button class="btn btn-sm btn-outline btn-view-student" data-id="${s.id}">Ver Ficha</button>
           <button class="btn btn-sm btn-primary btn-grade-student" data-id="${s.id}">Calificar</button>
         </td>
       `;
 
-      // Eventos de botones en la fila
       tr.querySelector('.btn-view-student').addEventListener('click', async () => {
         state.currentStudentId = s.id;
         document.getElementById('studentSelectInTab').value = s.id;
@@ -285,37 +428,36 @@ document.addEventListener('DOMContentLoaded', async () => {
       const student = res.student;
       const analytics = res.analytics;
 
-      // Encabezado
       document.getElementById('shStudentName').textContent = student.full_name;
       document.getElementById('shStudentCodeBadge').textContent = student.student_code;
       document.getElementById('shStudentCourse').textContent = `${res.course.code} — ${res.course.name}`;
       document.getElementById('shStudentAvg').textContent = analytics.studentAverage ? `${analytics.studentAverage}/100` : '--';
 
-      // Semáforo de alerta
+      // Semáforo de alerta sin emojis
       const alertContainer = document.getElementById('shAlertContainer');
       let badgeClass = 'badge-regular';
-      if (analytics.alertLevel === 'priority') badgeClass = 'badge-priority';
-      else if (analytics.alertLevel === 'recommended') badgeClass = 'badge-recommended';
+      let dotClass = 'status-regular';
+      if (analytics.alertLevel === 'priority') {
+        badgeClass = 'badge-priority';
+        dotClass = 'status-priority';
+      } else if (analytics.alertLevel === 'recommended') {
+        badgeClass = 'badge-recommended';
+        dotClass = 'status-recommended';
+      }
 
       alertContainer.innerHTML = `
-        <span class="badge ${badgeClass}" style="font-size:0.95rem; padding:0.4rem 1rem;">
-          ${analytics.alertBadge}
+        <span class="badge ${badgeClass}" style="font-size:0.9rem; padding:0.4rem 1rem;">
+          <span class="status-indicator ${dotClass}"></span> ${analytics.alertBadge}
         </span>
       `;
 
-      // Línea de color en la tarjeta
       const headerCard = document.getElementById('studentHeaderCard');
       if (analytics.alertLevel === 'priority') headerCard.style.borderLeftColor = '#ef4444';
       else if (analytics.alertLevel === 'recommended') headerCard.style.borderLeftColor = '#f59e0b';
       else headerCard.style.borderLeftColor = '#10b981';
 
-      // Gráficos
       renderStudentCharts(res);
-
-      // Historial de calificaciones
       renderStudentGradesTable(res.grades);
-
-      // Renderizar última retroalimentación de IA existente
       renderAIFeedbackOutput(res.feedbacks && res.feedbacks.length > 0 ? res.feedbacks[0] : null);
 
     } catch (err) {
@@ -327,21 +469,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     const grades = studentData.grades || [];
     const analytics = studentData.analytics || {};
 
-    // Detalle de tendencia
     const trendBadge = document.getElementById('trendBadgeDetail');
-    if (analytics.trend) {
+    if (trendBadge && analytics.trend) {
       trendBadge.textContent = analytics.trend.label || '';
     }
 
-    // Gráfico de línea con regresión
     SeguIACharts.renderTrendChart('trendChartContainer', grades, analytics.trend, studentData.course?.passing_grade || 60);
-
-    // Gráfico de barras de competencias
     SeguIACharts.renderCompetenciesBarChart('competenciesChartContainer', analytics.competenciesSummary, analytics.studentAverage);
   }
 
   function renderStudentGradesTable(grades) {
     const tbody = document.getElementById('studentGradesTableBody');
+    if (!tbody) return;
     tbody.innerHTML = '';
 
     if (!grades || grades.length === 0) {
@@ -353,19 +492,19 @@ document.addEventListener('DOMContentLoaded', async () => {
       const tr = document.createElement('tr');
       const isLow = g.score < 60;
       tr.innerHTML = `
-        <td><small style="color:var(--text-muted); font-weight:600;">${g.activity_date}</small></td>
+        <td><small style="color:var(--text-muted); font-weight:700;">${g.activity_date}</small></td>
         <td><strong>${g.activity_title}</strong></td>
         <td><span class="badge" style="background:#f1f5f9; color:#334155;">${g.competency_name || 'General'}</span></td>
         <td>${g.evidence_type || 'Documento'}</td>
         <td><strong style="color:${isLow ? '#dc2626' : '#2563eb'}; font-size:1.05rem;">${g.score}/100</strong></td>
-        <td style="color:#334155; font-size:0.88rem;">${g.observation ? `<em>"${g.observation}"</em>` : '<span style="color:#94a3b8;">Sin observación cualitativa</span>'}</td>
+        <td style="color:#334155; font-size:0.85rem;">${g.observation ? `<em>"${g.observation}"</em>` : '<span style="color:#94a3b8;">Sin observación cualitativa</span>'}</td>
       `;
       tbody.appendChild(tr);
     });
   }
 
   // ==========================================
-  // COMPONENTE DE INTELIGENCIA ARTIFICIAL
+  // COMPONENTE DE INTELIGENCIA ARTIFICIAL (SIN EMOJIS)
   // ==========================================
   async function handleGenerateAIFeedback() {
     if (!state.currentStudentId) return;
@@ -373,12 +512,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     const btn = document.getElementById('btnGenerateAI');
     const container = document.getElementById('aiOutputContainer');
     btn.disabled = true;
-    btn.textContent = 'Analizando con IA...';
+    btn.innerHTML = `${Icons.render('sparkles')} Analizando con IA...`;
 
     container.innerHTML = `
-      <div style="text-align:center; padding:2rem;">
-        <div style="font-size:1.1rem; font-weight:700; color:var(--primary); margin-bottom:0.5rem;">⚙️ SeguIA está procesando los indicadores...</div>
-        <p style="font-size:0.85rem; color:var(--text-muted);">Calculando correlaciones, auditando observaciones cualitativas y redactando la síntesis prudente.</p>
+      <div style="text-align:center; padding:2.5rem;">
+        <div style="font-size:1.1rem; font-weight:800; color:var(--primary); margin-bottom:0.4rem;">
+          SeguIA está procesando los indicadores...
+        </div>
+        <p style="font-size:0.85rem; color:var(--text-muted);">Auditando observaciones cualitativas y estructurando la síntesis pedagógica con lenguaje prudente.</p>
       </div>
     `;
 
@@ -386,14 +527,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       const res = await API.generateAIFeedback(state.currentStudentId);
       state.lastGeneratedFeedbackId = res.feedbackId;
       renderAIFeedbackOutput(res.feedback, res.feedbackId);
-      // Recargar ficha para refrescar historial
       await loadStudentDetails(state.currentStudentId);
     } catch (err) {
-      console.error('Error generando retroalimentación con IA:', err);
-      container.innerHTML = `<div style="padding:1.5rem; background:#fee2e2; color:#991b1b; border-radius:8px;"><strong>Error:</strong> ${err.message}</div>`;
+      console.error('Error generando retroalimentación:', err);
+      container.innerHTML = `<div style="padding:1.25rem; background:#fee2e2; color:#991b1b; border-radius:8px; font-size:0.88rem;"><strong>Error:</strong> ${err.message}</div>`;
     } finally {
       btn.disabled = false;
-      btn.textContent = 'Generar Retroalimentación';
+      btn.innerHTML = `${Icons.render('sparkles')} Generar Retroalimentación`;
     }
   }
 
@@ -402,7 +542,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!feedback) {
       container.innerHTML = `
         <div style="text-align:center; padding:2rem; color:#64748b;">
-          <p style="font-size:1rem; font-weight:600;">Presiona "Generar Retroalimentación" para formular el acompañamiento pedagógico.</p>
+          <p style="font-size:0.95rem; font-weight:700;">Presiona "Generar Retroalimentación" para formular el acompañamiento pedagógico.</p>
         </div>
       `;
       return;
@@ -415,54 +555,54 @@ document.addEventListener('DOMContentLoaded', async () => {
       <div class="ai-feedback-box">
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; margin-bottom:1rem;">
           <span class="ai-header-badge">
-            🤖 Modelo: ${feedback.modelUsed || feedback.model_used || 'SeguIA Engine'}
+            ${Icons.render('sparkles')} Modelo: ${feedback.modelUsed || feedback.model_used || 'SeguIA Engine'}
           </span>
-          <span style="font-size:0.8rem; color:var(--text-muted);">
+          <span style="font-size:0.78rem; color:var(--text-muted);">
             Fecha: ${feedback.generated_at ? new Date(feedback.generated_at).toLocaleString() : 'Reciente'}
           </span>
         </div>
 
-        <!-- 1. Resumen de Progreso -->
         <div class="ai-section">
-          <div class="ai-section-title">📊 Resumen de Progreso y Trayectoria</div>
+          <div class="ai-section-title">
+            ${Icons.render('fileText')} Resumen de Progreso y Trayectoria
+          </div>
           <div class="ai-section-content">${feedback.summary}</div>
         </div>
 
-        <!-- 2. Interpretación Pedagógica -->
         <div class="ai-section">
-          <div class="ai-section-title">🔍 Interpretación Pedagógica (Lenguaje Prudente, No Diagnóstico)</div>
+          <div class="ai-section-title">
+            ${Icons.render('search')} Interpretación Pedagógica (Lenguaje Prudente, No Diagnóstico)
+          </div>
           <div class="ai-section-content">${feedback.pedagogicalInterpretation || feedback.pedagogical_interpretation}</div>
         </div>
 
-        <!-- 3. Recomendación de Intervención Docente -->
         <div class="ai-section">
-          <div class="ai-section-title">🎯 Recomendación para la Acción y Decisión Docente</div>
+          <div class="ai-section-title">
+            ${Icons.render('target')} Recomendación de Intervención Docente
+          </div>
           <div class="ai-section-content" style="background:#eff6ff; padding:0.85rem; border-radius:8px; border-left:4px solid #3b82f6;">
             ${feedback.recommendation}
           </div>
         </div>
 
-        <!-- 4. Ficha de Explicabilidad Obligatoria -->
         <div class="explicability-card">
           <div class="explicability-title">
-            🛡️ Auditoría de Explicabilidad: ¿Por qué aparece esta recomendación?
+            ${Icons.render('shield')} Auditoría de Explicabilidad: ¿Por qué aparece esta recomendación?
           </div>
           <div>${feedback.explicability}</div>
         </div>
 
-        <!-- Acciones sobre la retroalimentación -->
         <div style="margin-top:1.25rem; display:flex; justify-content:flex-end; gap:0.75rem; flex-wrap:wrap;">
           <button class="btn btn-sm btn-outline" id="btnGoToRubricFromAI">
-            ⭐ Evaluar con Rúbrica Pedagógica
+            ${Icons.render('scale')} Evaluar con Rúbrica Pedagógica
           </button>
           <button class="btn btn-sm btn-accent" id="btnCreateInterventionFromAI">
-            🛠️ Convertir en Intervención Docente
+            ${Icons.render('tool')} Convertir en Intervención Docente
           </button>
         </div>
       </div>
     `;
 
-    // Eventos de los botones internos
     document.getElementById('btnGoToRubricFromAI')?.addEventListener('click', () => {
       switchTab('tab-ab');
       window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
@@ -477,25 +617,23 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // ==========================================
-  // CICLO DE INTERVENCIÓN DOCENTE
+  // CICLO DE INTERVENCIÓN DOCENTE (SIN EMOJIS)
   // ==========================================
   async function renderInterventionsTable() {
     const tbody = document.getElementById('interventionsTableBody');
+    if (!tbody) return;
     tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; padding:1.5rem;">Cargando ciclo de intervenciones...</td></tr>';
 
     try {
-      // Obtener todas las intervenciones del curso a través de los estudiantes
       const res = await API.getCourseStudents(state.currentCourseId);
       const studentIds = res.students.map(s => s.id);
-
-      // Traer detalle del estudiante actual o del primero
       const studentRes = await API.getStudent(state.currentStudentId || studentIds[0]);
       const interventions = studentRes.interventions || [];
 
       tbody.innerHTML = '';
 
       if (interventions.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:2rem; color:#94a3b8;">No hay intervenciones registradas en el ciclo para este estudiante. Puedes crear una con el botón "+ Registrar Nueva Intervención".</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:2rem; color:#94a3b8;">No hay intervenciones registradas en el ciclo para este estudiante. Puedes crear una con el botón "Nueva Intervención".</td></tr>`;
         return;
       }
 
@@ -527,7 +665,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           <td>${deltaHTML}</td>
           <td><span class="badge ${int.status === 'Superada con éxito' ? 'badge-regular' : 'badge-recommended'}">${int.status}</span></td>
           <td>
-            ${!isComplete ? `<button class="btn btn-sm btn-primary btn-eval-int" data-id="${int.id}">🎯 Evaluar Post</button>` : `<span style="color:#10b981; font-weight:700;">✓ Cerrada</span>`}
+            ${!isComplete ? `<button class="btn btn-sm btn-primary btn-eval-int" data-id="${int.id}">Evaluar Post</button>` : `<span style="color:#10b981; font-weight:700;">Cerrada</span>`}
           </td>
         `;
 
@@ -547,7 +685,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // ==========================================
-  // LABORATORIO COMPARATIVO A/B
+  // LABORATORIO COMPARATIVO A/B (SIN EMOJIS)
   // ==========================================
   async function handleRunABTest() {
     const studentId = Number(document.getElementById('abStudentSelect').value) || state.currentStudentId;
@@ -563,39 +701,37 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       const container = document.getElementById('abResultsContainer');
       container.innerHTML = `
-        <!-- Escenario A -->
         <div class="scenario-card scenario-a">
           <span class="scenario-badge">${ab.scenarioA.scenario}</span>
-          <div style="font-size:0.85rem; color:#7f1d1d; background:#fef2f2; padding:0.6rem; border-radius:6px; margin-bottom:0.75rem;">
+          <div style="font-size:0.82rem; color:#7f1d1d; background:#fef2f2; padding:0.6rem; border-radius:6px; margin-bottom:0.75rem;">
             <strong>Prompt básico:</strong> ${ab.scenarioA.promptGivenToAI}
           </div>
-          <div style="font-size:0.9rem; line-height:1.5; color:#334155; margin-bottom:1rem; flex:1;">
+          <div style="font-size:0.88rem; line-height:1.5; color:#334155; margin-bottom:1rem; flex:1;">
             <em>"${ab.scenarioA.feedbackGenerated}"</em>
           </div>
-          <div style="background:#fee2e2; border-left:4px solid #ef4444; padding:0.65rem; border-radius:4px; font-size:0.8rem; color:#991b1b;">
+          <div style="background:#fee2e2; border-left:3px solid #ef4444; padding:0.65rem; border-radius:4px; font-size:0.78rem; color:#991b1b;">
             ${ab.scenarioA.analysisPedagogico}
           </div>
           <div style="margin-top:1rem; padding-top:0.75rem; border-top:1px solid #fee2e2; font-size:0.85rem; font-weight:700; color:#b91c1c;">
-            Calificación en Rúbrica: ⭐ ${ab.scenarioA.rubricPreview.totalPromedio} / 5.0
+            Puntuación en Rúbrica: ${ab.scenarioA.rubricPreview.totalPromedio} / 5.0
           </div>
         </div>
 
-        <!-- Escenario B -->
         <div class="scenario-card scenario-b">
           <span class="scenario-badge">${ab.scenarioB.scenario}</span>
-          <div style="font-size:0.85rem; color:#064e3b; background:#f0fdf4; padding:0.6rem; border-radius:6px; margin-bottom:0.75rem;">
+          <div style="font-size:0.82rem; color:#064e3b; background:#f0fdf4; padding:0.6rem; border-radius:6px; margin-bottom:0.75rem;">
             <strong>Prompt enriquecido:</strong> ${ab.scenarioB.promptGivenToAI}
           </div>
-          <div style="font-size:0.9rem; line-height:1.5; color:#334155; margin-bottom:1rem; flex:1;">
+          <div style="font-size:0.88rem; line-height:1.5; color:#334155; margin-bottom:1rem; flex:1;">
             <p><strong>Síntesis:</strong> <em>"${ab.scenarioB.feedbackGenerated.summary}"</em></p>
             <p style="margin-top:0.35rem;"><strong>Interpretación:</strong> <em>"${ab.scenarioB.feedbackGenerated.pedagogicalInterpretation}"</em></p>
             <p style="margin-top:0.35rem;"><strong>Recomendación:</strong> <em>"${ab.scenarioB.feedbackGenerated.recommendation}"</em></p>
           </div>
-          <div style="background:#dcfce7; border-left:4px solid #10b981; padding:0.65rem; border-radius:4px; font-size:0.8rem; color:#14532d;">
+          <div style="background:#dcfce7; border-left:3px solid #10b981; padding:0.65rem; border-radius:4px; font-size:0.78rem; color:#14532d;">
             ${ab.scenarioB.analysisPedagogico}
           </div>
           <div style="margin-top:1rem; padding-top:0.75rem; border-top:1px solid #bbf7d0; font-size:0.85rem; font-weight:700; color:#15803d;">
-            Calificación en Rúbrica: ⭐ ${ab.scenarioB.rubricPreview.totalPromedio} / 5.0
+            Puntuación en Rúbrica: ${ab.scenarioB.rubricPreview.totalPromedio} / 5.0
           </div>
         </div>
       `;
@@ -605,7 +741,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       alert('Error ejecutando la prueba A/B: ' + err.message);
     } finally {
       btn.disabled = false;
-      btn.textContent = 'Ejecutar Comparativa A/B';
+      btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg> Ejecutar Comparativa A/B`;
     }
   }
 
@@ -634,7 +770,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         teacher_comments: comments
       });
 
-      alert(`✅ Rúbrica guardada exitosamente.\nPuntuación pedagógica global: ${res.overallScore} / 5.0`);
+      alert(`Rúbrica guardada exitosamente.\nPuntuación pedagógica global: ${res.overallScore} / 5.0`);
     } catch (err) {
       alert('Error guardando la rúbrica: ' + err.message);
     }
@@ -653,10 +789,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       const container = document.getElementById('printableReportContainer');
       container.innerHTML = `
         <div style="padding:1rem; font-family:var(--font-sans);">
-          <!-- Membrete -->
           <div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:2px solid #1e3a8a; padding-bottom:1rem; margin-bottom:1.5rem;">
             <div>
-              <h1 style="color:#1e3a8a; font-size:1.4rem; margin-bottom:0.25rem;">${rep.projectMeta.title}</h1>
+              <h1 style="color:#1e3a8a; font-size:1.35rem; margin-bottom:0.25rem;">${rep.projectMeta.title}</h1>
               <div style="font-size:0.85rem; color:#64748b; font-style:italic;">"${rep.projectMeta.motto}"</div>
               <div style="font-size:0.8rem; color:#334155; margin-top:0.25rem;">Autores del Proyecto: <strong>${rep.projectMeta.authors}</strong></div>
             </div>
@@ -667,21 +802,19 @@ document.addEventListener('DOMContentLoaded', async () => {
             </div>
           </div>
 
-          <!-- Datos del Estudiante -->
           <div style="display:flex; justify-content:space-between; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:1rem; margin-bottom:1.5rem;">
             <div>
-              <div style="font-size:0.8rem; color:#64748b; text-transform:uppercase;">Estudiante Evaluado</div>
-              <div style="font-size:1.2rem; font-weight:800; color:#1e293b;">${rep.student.full_name} (${rep.student.student_code})</div>
+              <div style="font-size:0.75rem; color:#64748b; text-transform:uppercase; font-weight:700;">Estudiante Evaluado</div>
+              <div style="font-size:1.15rem; font-weight:800; color:#1e293b;">${rep.student.full_name} (${rep.student.student_code})</div>
             </div>
             <div style="text-align:right;">
-              <div style="font-size:0.8rem; color:#64748b; text-transform:uppercase;">Promedio / Estado</div>
-              <div style="font-size:1.2rem; font-weight:800; color:#1e293b;">${rep.analytics.studentAverage}/100 — <span style="font-size:0.9rem;">${rep.analytics.alertBadge}</span></div>
+              <div style="font-size:0.75rem; color:#64748b; text-transform:uppercase; font-weight:700;">Promedio / Estado</div>
+              <div style="font-size:1.15rem; font-weight:800; color:#1e293b;">${rep.analytics.studentAverage}/100 — <span style="font-size:0.88rem;">${rep.analytics.alertBadge}</span></div>
             </div>
           </div>
 
-          <!-- Historial de Evaluaciones -->
-          <h3 style="color:#1e3a8a; font-size:1.05rem; margin-bottom:0.5rem;">1. Historial de Evidencias y Calificaciones</h3>
-          <table style="width:100%; border-collapse:collapse; margin-bottom:1.5rem; font-size:0.85rem;">
+          <h3 style="color:#1e3a8a; font-size:1rem; margin-bottom:0.5rem;">1. Historial de Evidencias y Calificaciones</h3>
+          <table style="width:100%; border-collapse:collapse; margin-bottom:1.5rem; font-size:0.82rem;">
             <thead>
               <tr style="background:#f1f5f9; text-align:left;">
                 <th style="padding:6px; border:1px solid #cbd5e1;">Fecha</th>
@@ -704,8 +837,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             </tbody>
           </table>
 
-          <!-- Retroalimentación Pedagógica -->
-          <h3 style="color:#1e3a8a; font-size:1.05rem; margin-bottom:0.5rem;">2. Síntesis y Acompañamiento Pedagógico de IA</h3>
+          <h3 style="color:#1e3a8a; font-size:1rem; margin-bottom:0.5rem;">2. Síntesis y Acompañamiento Pedagógico de IA</h3>
           <div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:1rem; margin-bottom:1.5rem; font-size:0.88rem; line-height:1.6;">
             ${rep.lastFeedback ? `
               <p><strong>Resumen:</strong> ${rep.lastFeedback.summary}</p>
@@ -717,10 +849,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             ` : '<p style="color:#94a3b8;">Sin retroalimentación generada aún.</p>'}
           </div>
 
-          <!-- Intervención Realizada y Efecto -->
-          <h3 style="color:#1e3a8a; font-size:1.05rem; margin-bottom:0.5rem;">3. Registro de Intervención Pedagógica y Medición de Impacto</h3>
+          <h3 style="color:#1e3a8a; font-size:1rem; margin-bottom:0.5rem;">3. Registro de Intervención Pedagógica y Medición de Impacto</h3>
           ${rep.interventions.length > 0 ? `
-            <table style="width:100%; border-collapse:collapse; margin-bottom:1.5rem; font-size:0.85rem;">
+            <table style="width:100%; border-collapse:collapse; margin-bottom:1.5rem; font-size:0.82rem;">
               <thead>
                 <tr style="background:#f1f5f9; text-align:left;">
                   <th style="padding:6px; border:1px solid #cbd5e1;">Estrategia Docente</th>
@@ -748,14 +879,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             </table>
           ` : '<p style="font-size:0.85rem; color:#94a3b8;">Sin intervenciones registradas.</p>'}
 
-          <!-- Firmas -->
-          <div style="display:flex; justify-content:space-between; margin-top:3rem; padding-top:1.5rem; border-top:1px dashed #cbd5e1; font-size:0.85rem; text-align:center;">
+          <div style="display:flex; justify-content:space-between; margin-top:3rem; padding-top:1.5rem; border-top:1px dashed #cbd5e1; font-size:0.82rem; text-align:center;">
             <div>
-              <div style="border-bottom:1px solid #334155; width:220px; margin-bottom:0.25rem;"></div>
+              <div style="border-bottom:1px solid #334155; width:200px; margin-bottom:0.25rem;"></div>
               Firma del Docente Responsable
             </div>
             <div>
-              <div style="border-bottom:1px solid #334155; width:220px; margin-bottom:0.25rem;"></div>
+              <div style="border-bottom:1px solid #334155; width:200px; margin-bottom:0.25rem;"></div>
               Coordinación Académica
             </div>
           </div>
@@ -779,14 +909,15 @@ document.addEventListener('DOMContentLoaded', async () => {
       competency_gap_threshold: Number(document.getElementById('cfg_competency_gap').value),
       gemini_api_key: document.getElementById('cfg_gemini_api_key').value.trim(),
       gemini_model: document.getElementById('cfg_gemini_model').value,
-      anonymize_ai: document.getElementById('cfg_anonymize').checked
+      anonymize_ai: document.getElementById('cfg_anonymize').checked,
+      ai_provider: 'gemini'
     };
 
     try {
       await API.saveSettings(newSettings);
       state.settings = newSettings;
       updatePrivacyBadge();
-      alert('✅ Configuraciones y umbrales actualizados.');
+      alert('Configuraciones y umbrales actualizados exitosamente.');
       await loadCourseData(state.currentCourseId);
     } catch (err) {
       alert('Error guardando configuraciones: ' + err.message);
@@ -821,7 +952,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       openModal('modalNewActivity');
     });
 
-    // Cerrar modales con botón data-close
+    // Abrir modal de nuevo curso
+    document.getElementById('btnNewCourse')?.addEventListener('click', () => {
+      openModal('modalNewCourse');
+    });
+
+    // Cerrar modales
     document.querySelectorAll('[data-close]').forEach(btn => {
       btn.addEventListener('click', () => {
         const modalId = btn.getAttribute('data-close');
@@ -829,7 +965,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
     });
 
-    // Enviar Calificación
+    // Guardar Calificación
     document.getElementById('btnSaveGradeSubmit')?.addEventListener('click', async () => {
       const studentId = Number(document.getElementById('gradeStudentSelect').value);
       const activityId = Number(document.getElementById('gradeActivitySelect').value);
@@ -850,7 +986,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           observation
         });
         closeModal('modalGrade');
-        alert('✅ Calificación y evidencia registradas.');
+        alert('Calificación y evidencia registradas.');
         await loadCourseData(state.currentCourseId);
         if (state.currentStudentId === studentId) {
           await loadStudentDetails(studentId);
@@ -860,7 +996,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     });
 
-    // Enviar Intervención
+    // Guardar Intervención
     document.getElementById('btnSaveInterventionSubmit')?.addEventListener('click', async () => {
       const studentId = Number(document.getElementById('intStudentSelect').value);
       const situation = document.getElementById('intSituationInput').value.trim();
@@ -884,7 +1020,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           score_before: scoreBefore
         });
         closeModal('modalIntervention');
-        alert('✅ Decisión pedagógica registrada exitosamente en el ciclo.');
+        alert('Decisión pedagógica registrada exitosamente.');
         await loadStudentDetails(studentId);
         switchTab('tab-cycle');
         renderInterventionsTable();
@@ -911,7 +1047,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           notes
         });
         closeModal('modalEvaluateIntervention');
-        alert('✅ Impacto de la intervención guardado. El ciclo de acompañamiento se ha medido exitosamente.');
+        alert('Impacto de la intervención guardado.');
         renderInterventionsTable();
       } catch (err) {
         alert('Error evaluando intervención: ' + err.message);
@@ -934,7 +1070,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           notes
         });
         closeModal('modalNewStudent');
-        alert('✅ Estudiante registrado.');
+        alert('Estudiante registrado.');
         await loadCourseData(state.currentCourseId);
       } catch (err) {
         alert('Error creando estudiante: ' + err.message);
@@ -959,10 +1095,39 @@ document.addEventListener('DOMContentLoaded', async () => {
           activity_date: date || new Date().toISOString().slice(0, 10)
         });
         closeModal('modalNewActivity');
-        alert('✅ Actividad creada.');
+        alert('Actividad creada.');
         await loadCourseData(state.currentCourseId);
       } catch (err) {
         alert('Error creando actividad: ' + err.message);
+      }
+    });
+
+    // Crear Curso
+    document.getElementById('btnSaveCourseSubmit')?.addEventListener('click', async () => {
+      const code = document.getElementById('courseCodeInput').value.trim();
+      const name = document.getElementById('courseNameInput').value.trim();
+      const teacher = document.getElementById('courseTeacherInput').value.trim();
+      const desc = document.getElementById('courseDescInput').value.trim();
+
+      if (!code || !name) return alert('Código y nombre del curso son obligatorios.');
+
+      try {
+        const res = await API.createCourse({
+          code,
+          name,
+          teacher_name: teacher || state.user?.name || 'Docente Responsable',
+          description: desc
+        });
+        closeModal('modalNewCourse');
+        alert('Curso creado exitosamente.');
+        await loadCourses();
+        if (res.courseId) {
+          state.currentCourseId = res.courseId;
+          document.getElementById('courseSelect').value = res.courseId;
+          await loadCourseData(res.courseId);
+        }
+      } catch (err) {
+        alert('Error creando curso: ' + err.message);
       }
     });
   }
@@ -984,7 +1149,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   function populateActivityAndCompetencySelects() {
-    // Actividades para calificar
     const actSelect = document.getElementById('gradeActivitySelect');
     if (actSelect) {
       actSelect.innerHTML = '';
@@ -996,7 +1160,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
     }
 
-    // Competencias para crear actividad
     const compSelect = document.getElementById('actCompSelect');
     if (compSelect) {
       compSelect.innerHTML = '';
@@ -1017,6 +1180,5 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById(id)?.classList.remove('active');
   }
 
-  // Inicializar todo
   init();
 });

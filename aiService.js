@@ -116,7 +116,7 @@ function generateHeuristicFeedback(context) {
 /**
  * Genera retroalimentación llamando a la API oficial de Google Gemini.
  */
-async function generateGeminiFeedback(context, apiKey, model = 'gemini-2.5-flash') {
+async function generateGeminiFeedback(context, apiKey, model = 'gemini-3.8-flash') {
   const { studentIdentifier, metrics, observations } = context;
 
   const systemInstruction = `
@@ -230,11 +230,11 @@ async function generateFeedback(student, metrics, observations = [], settings = 
   const context = prepareAnonymizedContext(student, metrics, observations, settings);
 
   const apiKey = settings.gemini_api_key || process.env.GEMINI_API_KEY;
-  const provider = settings.ai_provider || 'auto';
+  const provider = settings.ai_provider || 'gemini';
 
   if (apiKey && (provider === 'gemini' || provider === 'auto')) {
     try {
-      const model = settings.gemini_model || 'gemini-2.5-flash';
+      const model = settings.gemini_model || process.env.GEMINI_MODEL || 'gemini-3.8-flash';
       return await generateGeminiFeedback(context, apiKey, model);
     } catch (err) {
       console.warn('Fallo al conectar con Gemini API, recurriendo al motor heurístico pedagógico:', err.message);
