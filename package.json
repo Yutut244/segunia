@@ -1,6 +1,6 @@
 {
   "name": "Seguia",
-  "version": "1.0.20",
+  "version": "0.0.1",
   "description": "Sistema Inteligente de Seguimiento Académico y Retroalimentación Docente Basado en Evidencias",
   "main": "server.js",
   "scripts": {
